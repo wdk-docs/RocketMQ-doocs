@@ -8,7 +8,7 @@ MQ Nodejs HTTP SDK
 安装
 ------------------
 
-添加依赖 ``@aliyunmq/mq-http-sdk`` ，从npmjs获取最新版本
+添加依赖 ``@aliyunmq/mq-http-sdk`` ，从 **npmjs** 获取最新版本
 
 .. code:: sh
 

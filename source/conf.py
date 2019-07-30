@@ -31,6 +31,13 @@ release = 'v2019.07.26'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+    'sphinx.ext.extlinks',
+    'sphinx.ext.githubpages',
+    'sphinx.ext.todo',
+    'sphinxcontrib.httpdomain',
+    'sphinxjsondomain',
+    'recommonmark',
+    # 'sphinx_js'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -46,7 +53,9 @@ language = 'zh_CN'
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns = [
+
+]
 
 
 # -- Options for HTML output -------------------------------------------------
