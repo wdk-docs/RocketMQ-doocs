@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>权限策略 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="最佳实践" href="../practice/index.html" />
+    <link rel="prev" title="跨云账号授权" href="across.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">访问控制（权限管理）</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ram.html">RAM 主子账号授权</a></li>
+<li class="toctree-l2"><a class="reference internal" href="across.html">跨云账号授权</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">权限策略</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">访问控制（权限管理）</a> &raquo;</li>
+        
+      <li>权限策略</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/access/policy.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>权限策略<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本页目录
+系统策略
+自定义策略
+后续步骤
+更多信息
+消息队列 RocketMQ 的权限管理是通过阿里云的访问控制 RAM（Resource Access Management）产品实现的。使用 RAM 可以让您避免与其他用户共享云账号密钥，即 AccessKey（包含 AccessKeyId 和 AccessKeySecret），按需为用户分配最小权限。本文介绍消息队列 RocketMQ 在 RAM 中的权限策略。</p>
+<p>在 RAM 中，权限策略是用语法结构描述的一组权限的集合，可以精确地描述被授权的 Resource（资源集）、Action（操作集）以及授权条件。消息队列 RocketMQ 有以下两类 RAM 的权限策略：</p>
+<p>系统策略：统一由阿里云创建，您只能使用不能修改，策略的版本更新由阿里云维护。</p>
+<p>自定义策略：您可以自主创建、更新和删除，策略的版本更新由您自己维护。</p>
+<p>系统策略
+消息队列 RocketMQ 目前提供三种系统默认的权限策略。</p>
+<p>权限策略名称  说明
+AliyunMQFullAccess      管理消息队列 RocketMQ 的权限，等同于主账号的权限，被授予该权限的 RAM 用户具有所有消息收发权限且有控制台所有功能操作权限。
+AliyunMQPubOnlyAccess   消息队列 RocketMQ 的发布权限，被授予该权限的 RAM 用户具有使用主账号所有资源通过 SDK 发送消息的权限。
+AliyunMQSubOnlyAccess   消息队列 RocketMQ 的订阅权限，被授予该权限的 RAM 用户具有使用主账号所有资源通过 SDK 订阅消息的权限。
+自定义策略
+自定义权限策略（Policy）可以满足您更细粒度的授权需求。</p>
+<p>消息队列 RocketMQ 的 Resource 与 Action 的对应规则
+在消息队列 RocketMQ 中，实例、Topic 和 Group 各为一种 Resource，对这些 Resource 授予的权限即为 Action。Topic 和 Group 的 Resource 命名格式因实例是否有命名空间而异。您可在消息队列 RocketMQ 控制台的实例管理页面查看实例是否有命名空间。</p>
+<p>消息队列 RocketMQ 的 Resource 和 Action 的可选值和对应规则如下。</p>
+<p>Resource        命名格式    Action  备注
+有命名空间   无命名空间   Action 名称       说明
+实例      acs:mq:<em>:</em>:{instanceId} acs:mq:<em>:</em>:{instanceId} mq:OnsInstanceBaseInfo  查询实例基本信息        授予某 RAM 用户 Topic 和 Group 的相关权限前，需授予该用户 Topic 和 Group 所在实例的 “mq:OnsInstanceBaseInfo” 权限。
+mq:OnsIntanceUpdate     更新实例    无
+mq:OnsInstanceCreate    创建实例    无
+mq:OnsIntanceDelete     删除实例（慎用）        无
+Topic   acs:mq:<em>:</em>:{instanceId}%{topic} acs:mq:<em>:</em>:{topic}      mq:PUB  消息发布    授予某 RAM 用户 Topic 的相关权限前，需授予该用户 Topic 所在实例的 “mq:OnsInstanceBaseInfo” 权限。
+mq:SUB  消息订阅
+mq:OnsTopicCreate       创建 Topic
+mq:OnsTopicDelete       删除 Topic
+mq:OnsTopicUpdateInfo   更新 Topic 备注
+Group   acs:mq:::{instanceId}%{groupId} acs:mq:<em>:</em>:{groupId}    mq:SUB  消息订阅    授予某 RAM 用户 Group 的相关权限前，需授予该用户 Group 所在实例的 “mq:OnsInstanceBaseInfo” 权限。
+mq:OnsGroupCreate       创建 Group
+mq:OnsGroupDelete       删除 Group
+常用策略示例
+如需直接复制示例代码，使用时请删除注释内容，即 “//” 及以后的文字说明。</p>
+<p>示例一：授予实例中某 Topic 和 Group 的权限</p>
+<p>适用于有命名空间的实例</p>
+<dl>
+<dt>{</dt><dd><p>“Version”:”1”,
+“Statement”:[</p>
+<blockquote>
+<div><dl>
+<dt>{    // 授予实例的授权，授予 Topic 和 Group 的权限前请先授予相应实例的权限（适用于有命名空间的实例）</dt><dd><p>“Effect”:”Allow”,
+“Action”:[</p>
+<blockquote>
+<div><p>“mq:OnsInstanceBaseInfo”</p>
+</div></blockquote>
+<p>],
+“Resource”:[</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{instanceId}”</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>},
+{    // 授予 Topic 的消息发布和订阅权限</p>
+<blockquote>
+<div><p>“Effect”:”Allow”,
+“Action”:[</p>
+<blockquote>
+<div><p>“mq:PUB”,
+“mq:SUB”</p>
+</div></blockquote>
+<p>],
+“Resource”:[</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{instanceId}%{topic}”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{    // 授予 Group 的权限</p>
+<blockquote>
+<div><p>“Effect”:”Allow”,
+“Action”:[</p>
+<blockquote>
+<div><p>“mq:SUB”</p>
+</div></blockquote>
+<p>],
+“Resource”:[</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{instanceId}%{groupId}”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}
+适用于无命名空间的实例</p>
+<dl>
+<dt>{</dt><dd><p>“Version”:”1”,
+“Statement”:[</p>
+<blockquote>
+<div><dl>
+<dt>{    // 授予实例的授权，授予 Topic 和 Group 的权限前请先授予相应实例的权限（适用于无命名空间的实例）</dt><dd><p>“Effect”:”Allow”,
+“Action”:[</p>
+<blockquote>
+<div><p>“mq:OnsInstanceBaseInfo”</p>
+</div></blockquote>
+<p>],
+“Resource”:[</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{instanceId}”</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>},
+{    // 授予 Topic 的消息发布和订阅权限</p>
+<blockquote>
+<div><p>“Effect”:”Allow”,
+“Action”:[</p>
+<blockquote>
+<div><p>“mq:PUB”,
+“mq:SUB”</p>
+</div></blockquote>
+<p>],
+“Resource”:[</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{topic}”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>},
+{    // 授予 Group 的权限</p>
+<blockquote>
+<div><p>“Effect”:”Allow”,
+“Action”:[</p>
+<blockquote>
+<div><p>“mq:SUB”</p>
+</div></blockquote>
+<p>],
+“Resource”:[</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{groupId}”</p>
+</div></blockquote>
+<p>]</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}
+示例二：授权整个实例的权限（只适用于有命名空间的实例）</p>
+<p>若要授予整个实例的权限，即该实例中所有资源的所有操作权限，请按以下示例设置。</p>
+<p>说明：该示例场景没有适用于无命名空间的实例的授权方法。</p>
+<blockquote>
+<div><dl>
+<dt>{   // 仅适用于有命名空间的实例</dt><dd><p>“Version”: “1”,
+“Statement”: [</p>
+<blockquote>
+<div><dl>
+<dt>{</dt><dd><p>“Effect”: “Allow”,
+“Action”: [</p>
+<blockquote>
+<div><p>“mq:<a href="#id2"><span class="problematic" id="id3">*</span></a>”</p>
+</div></blockquote>
+<p>],
+“Resource”: [</p>
+<blockquote>
+<div><p>“acs:mq:<em>:</em>:{instanceId}*” //授予该实例的权限，{instanceId} 用实例 ID 代替</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>]</p>
+</dd>
+</dl>
+<p>}</p>
+</div></blockquote>
+<p>后续步骤
+RAM 主子账号授权</p>
+<p>跨云账号授权</p>
+<p>更多信息
+权限策略概述</p>
+<p>什么是 RAM</p>
+<p>基本概念</p>
+<p>创建自定义策略</p>
+<p>创建 RAM 用户</p>
+<p>为 RAM 用户授权</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../practice/index.html" class="btn btn-neutral float-right" title="最佳实践" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="across.html" class="btn btn-neutral float-left" title="跨云账号授权" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

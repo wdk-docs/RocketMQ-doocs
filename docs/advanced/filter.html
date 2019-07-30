@@ -1,0 +1,318 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>消息过滤 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="Exactly-Once 投递语义" href="exactly-once.html" />
+    <link rel="prev" title="消息重试" href="retry.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">高级特性</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="common_message.html">普通消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deliver_message.html">定时和延时消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_message.html">顺序消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_message.html">事务消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">消息重试</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">消息过滤</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">参考示例</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">发送消息</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">消费方式-1</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">消费方式-2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">消费方式-3</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">消费方式-4（错误示例）</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="exactly-once.html">Exactly-Once 投递语义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topic.html">集群消费和广播消费</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">高级特性</a> &raquo;</li>
+        
+      <li>消息过滤</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/advanced/filter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>消息过滤<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本文描述消息队列 RocketMQ 的消费者如何根据 Tag 在消息队列 RocketMQ 服务端完成消息过滤，
+关于 Topic 和 Tag 的介绍，请参考Topic 与 Tag 最佳实践。</p>
+<p>Tag，即消息标签、消息类型，用于对某个 Topic 下的消息进行分类。
+消息队列 RocketMQ 允许消费者按照 Tag 对消息进行过滤，确保消费者最终只消费到他关心的消息类型。</p>
+<p>以下图电商交易场景为例，从客户下单到收到商品这一过程会生产一系列消息，比如订单创建消息（order）、支付消息（pay）、物流消息（logistics）。
+这些消息会发送到 Topic 为 Trade_Topic 的队列中，被各个不同的系统所接收，
+比如支付系统、物流系统、交易成功率分析系统、实时计算系统等。 其中，物流系统只需接收物流类型的消息（logistics），
+而实时计算系统需要接收所有和交易相关（order、pay、logistics）的消息。</p>
+<div class="figure align-default">
+<img alt="消息过滤" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/29543/cn_zh/1535686269135/%E4%BA%A4%E6%98%93%E5%9C%BA%E6%99%AF.png" />
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>针对消息归类，您可以选择创建多个 Topic， 或者在同一个 Topic 下创建多个 Tag。
+但通常情况下，不同的 Topic 之间的消息没有必然的联系，
+而 Tag 则用来区分同一个 Topic 下相互关联的消息，比如全集和子集的关系，流程先后的关系。</p>
+</div>
+<div class="section" id="id2">
+<h2>参考示例<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id3">
+<h3>发送消息<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>发送消息时，每条消息必须指明 Tag：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Message</span> <span class="n">msg</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Message</span><span class="o">(</span><span class="s">&quot;MQ_TOPIC&quot;</span><span class="o">,</span><span class="s">&quot;TagA&quot;</span><span class="o">,</span><span class="s">&quot;Hello MQ&quot;</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>消费方式-1<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>消费者如需订阅某 Topic 下所有类型的消息，Tag 用符号 * 表示：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ_TOPIC&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>消费方式-2<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>消费者如需订阅某 Topic 下某一种类型的消息，请明确标明 Tag：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ_TOPIC&quot;</span><span class="o">,</span> <span class="s">&quot;TagA&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>消费方式-3<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>消费者如需订阅某 Topic 下多种类型的消息，请在多个 Tag 之间用 || 分隔：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ_TOPIC&quot;</span><span class="o">,</span> <span class="s">&quot;TagA||TagB&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id7">
+<h3>消费方式-4（错误示例）<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<p>同一个消费者多次订阅某个 Topic 下的 Tag，以最后一次订阅的 Tag 为准：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="c1">//如下错误代码中，consumer 只能接收到 MQ_TOPIC 下 TagB 的消息，而不能接收 TagA 的消息。</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ_TOPIC&quot;</span><span class="o">,</span> <span class="s">&quot;TagA&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ_TOPIC&quot;</span><span class="o">,</span> <span class="s">&quot;TagB&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="exactly-once.html" class="btn btn-neutral float-right" title="Exactly-Once 投递语义" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="retry.html" class="btn btn-neutral float-left" title="消息重试" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

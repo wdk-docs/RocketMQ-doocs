@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>集群消费和广播消费 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="快速入门" href="../quickstart/index.html" />
+    <link rel="prev" title="Exactly-Once 投递语义" href="exactly-once.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">高级特性</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="common_message.html">普通消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deliver_message.html">定时和延时消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_message.html">顺序消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_message.html">事务消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">消息重试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html">消息过滤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exactly-once.html">Exactly-Once 投递语义</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">集群消费和广播消费</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">基本概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">场景对比</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">集群消费模式：</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">适用场景&amp;注意事项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">广播消费模式：</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id7">适用场景&amp;注意事项</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id8">使用集群模式模拟广播：</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id9">适用场景&amp;注意事项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">高级特性</a> &raquo;</li>
+        
+      <li>集群消费和广播消费</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/advanced/topic.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>集群消费和广播消费<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本文主要介绍消息队列 RocketMQ 的集群消费和广播消费的基本概念，适用场景以及注意事项。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>关于集群消费模式和广播消费模式的具体配置方法，请参见以下文档：</p>
+<ul class="simple">
+<li><p>Java：订阅消息</p></li>
+<li><p>.NET：订阅消息</p></li>
+<li><p>C/C++：订阅消息</p></li>
+</ul>
+</div>
+<div class="section" id="id2">
+<h2>基本概念<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>消息队列 RocketMQ 是基于发布/订阅模型的消息系统。消息的订阅方订阅关注的 Topic，以获取并消费消息。
+由于订阅方应用一般是分布式系统，以集群方式部署有多台机器。因此消息队列 RocketMQ 约定以下概念。</p>
+<p><strong>集群：</strong> 使用相同 Group ID 的订阅者属于同一个集群。同一个集群下的订阅者消费逻辑必须完全一致（包括 Tag 的使用），
+这些订阅者在逻辑上可以认为是一个消费节点。</p>
+<p><strong>集群消费：</strong> 当使用集群消费模式时，消息队列 RocketMQ 认为任意一条消息只需要被集群内的任意一个消费者处理即可。</p>
+<p><strong>广播消费：</strong> 当使用广播消费模式时，消息队列 RocketMQ 会将每条消息推送给集群内所有注册过的客户端，保证消息至少被每台机器消费一次。</p>
+</div>
+<div class="section" id="id3">
+<h2>场景对比<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id4">
+<h3>集群消费模式：<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default">
+<img alt="g1" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/43163/cn_zh/1551853820106/groupid.png" />
+</div>
+</div>
+<div class="section" id="id5">
+<h3>适用场景&amp;注意事项<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>消费端集群化部署，每条消息只需要被处理一次。</p></li>
+<li><p>由于消费进度在服务端维护，可靠性更高。</p></li>
+<li><p>集群消费模式下，每一条消息都只会被分发到一台机器上处理。如果需要被集群下的每一台机器都处理，请使用广播模式。</p></li>
+<li><p>集群消费模式下，不保证每一次失败重投的消息路由到同一台机器上，因此处理消息时不应该做任何确定性假设。</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>广播消费模式：<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="figure align-default">
+<img alt="groupid111" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/43163/cn_zh/1551854076629/groupid111.png" />
+</div>
+</div>
+<div class="section" id="id7">
+<h3>适用场景&amp;注意事项<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>广播消费模式下不支持顺序消息。</p></li>
+<li><p>广播消费模式下不支持重置消费位点。</p></li>
+<li><p>每条消息都需要被相同逻辑的多台机器处理。</p></li>
+<li><p>消费进度在客户端维护，出现重复的概率稍大于集群模式。</p></li>
+<li><p>广播模式下，消息队列 RocketMQ 保证每条消息至少被每台客户端消费一次，但是并不会对消费失败的消息进行失败重投，因此业务方需要关注消费失败的情况。</p></li>
+<li><p>广播模式下，客户端每一次重启都会从最新消息消费。客户端在被停止期间发送至服务端的消息将会被自动跳过，请谨慎选择。</p></li>
+<li><p>广播模式下，每条消息都会被大量的客户端重复处理，因此推荐尽可能使用集群模式。</p></li>
+<li><p>目前仅 Java 客户端支持广播模式。</p></li>
+<li><p>广播模式下服务端不维护消费进度，所以消息队列 RocketMQ 控制台不支持消息堆积查询、消息堆积报警和订阅关系查询功能。</p></li>
+</ul>
+</div>
+<div class="section" id="id8">
+<h3>使用集群模式模拟广播：<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h3>
+<p>如果业务需要使用广播模式，也可以创建多个 Group ID，用于订阅同一个 Topic。</p>
+<div class="figure align-default">
+<img alt="g2" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/43163/cn_zh/1551853895019/groupid2.png" />
+</div>
+</div>
+<div class="section" id="id9">
+<h3>适用场景&amp;注意事项<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h3>
+<ul>
+<li><p>每条消息都需要被多台机器处理，每台机器的逻辑可以相同也可以不一样。</p></li>
+<li><p>消费进度在服务端维护，可靠性高于广播模式。</p></li>
+<li><p>对于一个 Group ID 来说，可以部署一个消费端实例，也可以部署多个消费端实例。
+当部署多个消费端实例时，实例之间又组成了集群模式（共同分担消费消息）。
+假设 Group ID 1 部署了三个消费者实例 C1、C2、C3，那么这三个实例将共同分担服务器发送给</p>
+<blockquote>
+<div><p>Group ID 1 的消息。 同时，实例之间订阅关系必须保持一致。</p>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../quickstart/index.html" class="btn btn-neutral float-right" title="快速入门" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="exactly-once.html" class="btn btn-neutral float-left" title="Exactly-Once 投递语义" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

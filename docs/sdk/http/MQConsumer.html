@@ -1,0 +1,356 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>消费者 MQConsumer &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="生产者 MQProducer" href="MQProducer.html" />
+    <link rel="prev" title="客户端 MQClient" href="MQClient.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">SDK 参考</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../tcp/index.html">TCP 协议</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">HTTP 协议</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="http.html">HTTP 协议</a></li>
+<li class="toctree-l3"><a class="reference internal" href="mq-http-nodejs-sdk.html">MQ Nodejs HTTP SDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MessageProperties.html">消息属性 MessageProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQClient.html">客户端 MQClient</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">消费者 MQConsumer</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">方法</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MQProducer.html">生产者 MQProducer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTransProducer.html">事务生产者 MQTransProducer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stomp.html">STOMP 协议</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">SDK 参考</a> &raquo;</li>
+        
+          <li><a href="index.html">HTTP 协议</a> &raquo;</li>
+        
+      <li>消费者 MQConsumer</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/sdk/http/MQConsumer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mqconsumer">
+<h1>消费者 MQConsumer<a class="headerlink" href="#mqconsumer" title="永久链接至标题">¶</a></h1>
+<p>MQ的消息消费者</p>
+<dl class="class">
+<dt id="MQConsumer">
+<em class="property">class </em><code class="descname">MQConsumer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#MQConsumer" title="永久链接至目标">¶</a></dt>
+<dd><p>消费者构造函数</p>
+<p>new MQConsumer(client, instanceId, topic, consumer, messageTag)</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>client</strong> (<a class="reference internal" href="MQClient.html#MQClient" title="MQClient"><em>MQClient</em></a>) – MQ客户端</p></li>
+<li><p><strong>instanceId</strong> (<em>string</em>) – 实例ID</p></li>
+<li><p><strong>topic</strong> (<em>string</em>) – 主题名字</p></li>
+<li><p><strong>consumer</strong> (<em>string</em>) – 消费者名字(CID)a</p></li>
+<li><p><strong>messageTag</strong> (<em>string</em>) – 消费消息的过滤标签，可空</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="section" id="id1">
+<h2>方法<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<dl class="function">
+<dt id="&lt;async&gt; MQConsumer.ackMessage">
+<code class="descclassname">&lt;async&gt; MQConsumer.</code><code class="descname">ackMessage</code><span class="sig-paren">(</span><em>receiptHandles</em><span class="sig-paren">)</span><a class="headerlink" href="#<async> MQConsumer.ackMessage" title="永久链接至目标">¶</a></dt>
+<dd><p>确认消息消费成功，消费成功后需要调用该接口否则会重复消费消息</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>receiptHandles</strong> (<em>array</em>) – 消息句柄数组</p></li>
+</ul>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>object</p>
+</dd>
+<dt class="field-odd">返回</dt>
+<dd class="field-odd"><p><div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// 请求成功</span>
+  <span class="nx">code</span><span class="o">:</span><span class="mi">204</span><span class="p">,</span>
+  <span class="c1">// 请求ID</span>
+  <span class="nx">requestId</span><span class="o">:</span><span class="s2">&quot;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">抛出</dt>
+<dd class="field-even"><p><strong>exception</strong> – <p>err 请求失败或者其它网络异常</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// MQ服务端返回的错误Code，如ReceiptHandleError，表示消息句柄非法，MessageNotExist表示超过了ack的时间，即NextConsumeTime</span>
+  <span class="nx">Code</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+  <span class="c1">// 请求ID</span>
+  <span class="nx">RequestId</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="&lt;async&gt; MQConsumer.consumeMessage">
+<code class="descclassname">&lt;async&gt; MQConsumer.</code><code class="descname">consumeMessage</code><span class="sig-paren">(</span><em>numOfMessages</em>, <em>waitSeconds</em><span class="sig-paren">)</span><a class="headerlink" href="#<async> MQConsumer.consumeMessage" title="永久链接至目标">¶</a></dt>
+<dd><p>消费消息,默认如果该条消息没有被 {ackMessage} 确认消费成功，即在NextConsumeTime时会再次消费到该条消息</p>
+<dl class="field-list simple">
+<dt class="field-odd">参数</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>numOfMessages</strong> (<em>int</em>) – 每次从服务端消费条消息</p></li>
+<li><p><strong>waitSeconds</strong> (<em>int</em>) – 长轮询的等待时间（可空），如果服务端没有消息请求会在该时间之后返回等于请求阻塞在服务端，如果期间有消息立刻返回</p></li>
+</ul>
+</dd>
+<dt class="field-even">返回类型</dt>
+<dd class="field-even"><p>object</p>
+</dd>
+<dt class="field-odd">返回</dt>
+<dd class="field-odd"><p><div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nx">code</span><span class="o">:</span> <span class="mi">200</span><span class="p">,</span>
+<span class="nx">requestId</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="nx">body</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="c1">// 消息ID</span>
+      <span class="nx">MessageId</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="c1">// 消息体MD5</span>
+      <span class="nx">MessageBodyMD5</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="c1">// 发送消息的时间戳，毫秒</span>
+      <span class="nx">PublishTime</span><span class="o">:</span> <span class="p">{</span><span class="kr">long</span><span class="p">},</span>
+      <span class="c1">// 下次重试消费的时间，前提是这次不调用{ackMessage} 确认消费消费成功，毫秒</span>
+      <span class="nx">NextConsumeTime</span><span class="o">:</span> <span class="p">{</span><span class="kr">long</span><span class="p">},</span>
+      <span class="c1">// 第一次消费的时间，毫秒</span>
+      <span class="nx">FirstConsumeTime</span><span class="o">:</span> <span class="p">{</span><span class="kr">long</span><span class="p">},</span>
+      <span class="c1">// 消费的次数</span>
+      <span class="nx">ConsumedTimes</span><span class="o">:</span> <span class="p">{</span><span class="kr">long</span><span class="p">},</span>
+      <span class="c1">// 消息句柄，调用 {ackMessage} 需要将消息句柄传入，用于确认该条消息消费成功</span>
+      <span class="nx">ReceiptHandle</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="c1">// 消息内容</span>
+      <span class="nx">MessageBody</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+      <span class="c1">// 消息标签</span>
+      <span class="nx">MessageTag</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+<dt class="field-even">抛出</dt>
+<dd class="field-even"><p><strong>exception</strong> – <p>err MQ服务端返回的错误或者其它网络异常</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="c1">// MQ服务端返回的错误Code，其中MessageNotExist是正常现象，表示没有可消费的消息</span>
+  <span class="nx">Code</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+  <span class="c1">// 请求ID</span>
+  <span class="nx">RequestId</span><span class="o">:</span> <span class="s2">&quot;&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="MQProducer.html" class="btn btn-neutral float-right" title="生产者 MQProducer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="MQClient.html" class="btn btn-neutral float-left" title="客户端 MQClient" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

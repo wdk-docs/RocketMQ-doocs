@@ -1,0 +1,158 @@
+权限策略
+==============
+
+本页目录
+系统策略
+自定义策略
+后续步骤
+更多信息
+消息队列 RocketMQ 的权限管理是通过阿里云的访问控制 RAM（Resource Access Management）产品实现的。使用 RAM 可以让您避免与其他用户共享云账号密钥，即 AccessKey（包含 AccessKeyId 和 AccessKeySecret），按需为用户分配最小权限。本文介绍消息队列 RocketMQ 在 RAM 中的权限策略。
+
+在 RAM 中，权限策略是用语法结构描述的一组权限的集合，可以精确地描述被授权的 Resource（资源集）、Action（操作集）以及授权条件。消息队列 RocketMQ 有以下两类 RAM 的权限策略：
+
+系统策略：统一由阿里云创建，您只能使用不能修改，策略的版本更新由阿里云维护。
+
+自定义策略：您可以自主创建、更新和删除，策略的版本更新由您自己维护。
+
+系统策略
+消息队列 RocketMQ 目前提供三种系统默认的权限策略。
+
+权限策略名称	说明
+AliyunMQFullAccess	管理消息队列 RocketMQ 的权限，等同于主账号的权限，被授予该权限的 RAM 用户具有所有消息收发权限且有控制台所有功能操作权限。
+AliyunMQPubOnlyAccess	消息队列 RocketMQ 的发布权限，被授予该权限的 RAM 用户具有使用主账号所有资源通过 SDK 发送消息的权限。
+AliyunMQSubOnlyAccess	消息队列 RocketMQ 的订阅权限，被授予该权限的 RAM 用户具有使用主账号所有资源通过 SDK 订阅消息的权限。
+自定义策略
+自定义权限策略（Policy）可以满足您更细粒度的授权需求。
+
+消息队列 RocketMQ 的 Resource 与 Action 的对应规则
+在消息队列 RocketMQ 中，实例、Topic 和 Group 各为一种 Resource，对这些 Resource 授予的权限即为 Action。Topic 和 Group 的 Resource 命名格式因实例是否有命名空间而异。您可在消息队列 RocketMQ 控制台的实例管理页面查看实例是否有命名空间。
+
+消息队列 RocketMQ 的 Resource 和 Action 的可选值和对应规则如下。
+
+Resource	命名格式	Action	备注
+有命名空间	无命名空间	Action 名称	说明
+实例	acs:mq:*:*:{instanceId}	acs:mq:*:*:{instanceId}	mq:OnsInstanceBaseInfo	查询实例基本信息	授予某 RAM 用户 Topic 和 Group 的相关权限前，需授予该用户 Topic 和 Group 所在实例的 “mq:OnsInstanceBaseInfo” 权限。
+mq:OnsIntanceUpdate	更新实例	无
+mq:OnsInstanceCreate	创建实例	无
+mq:OnsIntanceDelete	删除实例（慎用）	无
+Topic	acs:mq:*:*:{instanceId}%{topic}	acs:mq:*:*:{topic}	mq:PUB	消息发布	授予某 RAM 用户 Topic 的相关权限前，需授予该用户 Topic 所在实例的 “mq:OnsInstanceBaseInfo” 权限。
+mq:SUB	消息订阅
+mq:OnsTopicCreate	创建 Topic
+mq:OnsTopicDelete	删除 Topic
+mq:OnsTopicUpdateInfo	更新 Topic 备注
+Group	acs:mq:::{instanceId}%{groupId}	acs:mq:*:*:{groupId}	mq:SUB	消息订阅	授予某 RAM 用户 Group 的相关权限前，需授予该用户 Group 所在实例的 “mq:OnsInstanceBaseInfo” 权限。
+mq:OnsGroupCreate	创建 Group
+mq:OnsGroupDelete	删除 Group
+常用策略示例
+如需直接复制示例代码，使用时请删除注释内容，即 “//” 及以后的文字说明。
+
+示例一：授予实例中某 Topic 和 Group 的权限
+
+适用于有命名空间的实例
+
+{
+    "Version":"1",
+    "Statement":[
+        {    // 授予实例的授权，授予 Topic 和 Group 的权限前请先授予相应实例的权限（适用于有命名空间的实例）
+            "Effect":"Allow",
+            "Action":[
+                "mq:OnsInstanceBaseInfo"
+            ],
+            "Resource":[
+                "acs:mq:*:*:{instanceId}"
+            ]
+        },
+        {    // 授予 Topic 的消息发布和订阅权限
+            "Effect":"Allow",
+            "Action":[
+                "mq:PUB",
+                "mq:SUB"
+            ],
+            "Resource":[
+                "acs:mq:*:*:{instanceId}%{topic}"
+            ]
+        },
+        {    // 授予 Group 的权限
+            "Effect":"Allow",
+            "Action":[
+                "mq:SUB"
+            ],
+            "Resource":[
+                "acs:mq:*:*:{instanceId}%{groupId}"
+            ]
+        }
+    ]
+}
+适用于无命名空间的实例
+
+{
+    "Version":"1",
+    "Statement":[
+        {    // 授予实例的授权，授予 Topic 和 Group 的权限前请先授予相应实例的权限（适用于无命名空间的实例）
+            "Effect":"Allow",
+            "Action":[
+                "mq:OnsInstanceBaseInfo"
+            ],
+            "Resource":[
+                "acs:mq:*:*:{instanceId}"
+            ]
+        },
+        {    // 授予 Topic 的消息发布和订阅权限
+            "Effect":"Allow",
+            "Action":[
+                "mq:PUB",
+                "mq:SUB"
+            ],
+            "Resource":[
+                "acs:mq:*:*:{topic}"
+            ]
+        },
+        {    // 授予 Group 的权限
+            "Effect":"Allow",
+            "Action":[
+                "mq:SUB"
+            ],
+            "Resource":[
+                "acs:mq:*:*:{groupId}"
+            ]
+        }
+    ]
+}
+示例二：授权整个实例的权限（只适用于有命名空间的实例）
+
+若要授予整个实例的权限，即该实例中所有资源的所有操作权限，请按以下示例设置。
+
+说明：该示例场景没有适用于无命名空间的实例的授权方法。
+
+  {   // 仅适用于有命名空间的实例
+      "Version": "1",
+      "Statement": [
+          {
+              "Effect": "Allow",
+              "Action": [
+                  "mq:*"
+              ],
+              "Resource": [
+                  "acs:mq:*:*:{instanceId}*" //授予该实例的权限，{instanceId} 用实例 ID 代替
+              ]
+          }
+      ]
+  }
+后续步骤
+RAM 主子账号授权
+
+跨云账号授权
+
+更多信息
+权限策略概述
+
+什么是 RAM
+
+基本概念
+
+创建自定义策略
+
+创建 RAM 用户
+
+为 RAM 用户授权
+

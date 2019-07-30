@@ -1,0 +1,363 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>顺序消息 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="事务消息" href="transaction_message.html" />
+    <link rel="prev" title="定时和延时消息" href="deliver_message.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">高级特性</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="common_message.html">普通消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deliver_message.html">定时和延时消息</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">顺序消息</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">概念介绍</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id3">全局顺序</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">分区顺序</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">全局顺序与分区顺序对比</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">注意事项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sdk">SDK 支持和示例代码</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_message.html">事务消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">消息重试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html">消息过滤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exactly-once.html">Exactly-Once 投递语义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topic.html">集群消费和广播消费</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">高级特性</a> &raquo;</li>
+        
+      <li>顺序消息</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/advanced/sequence_message.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>顺序消息<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本文主要介绍消息队列 RocketMQ 顺序消息的概念、适用场景以及使用过程中的注意事项。</p>
+<div class="section" id="id2">
+<h2>概念介绍<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>顺序消息（FIFO 消息）是消息队列 RocketMQ 提供的一种严格按照顺序进行发布和消费的消息类型。 顺序消息指消息发布和消息消费都按顺序进行。</p>
+<ul class="simple">
+<li><p>顺序发布：对于指定的一个 Topic，客户端将按照一定的先后顺序发送消息。</p></li>
+<li><p>顺序消费：对于指定的一个 Topic，按照一定的先后顺序接收消息，即先发送的消息一定会先被客户端接收到。</p></li>
+</ul>
+<div class="section" id="id3">
+<h3>全局顺序<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>对于指定的一个 Topic，所有消息按照严格的先入先出（FIFO）的顺序进行发布和消费。</p>
+<div class="figure align-default">
+<img alt="ordered-msg-1" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/49319/cn_zh/1534917028902/%E5%85%A8%E5%B1%80%E9%A1%BA%E5%BA%8F.png" />
+</div>
+<p>适用场景</p>
+<p>性能要求不高，所有的消息严格按照 FIFO 原则进行消息发布和消费的场景。</p>
+<p>示例</p>
+<p>在证券处理中，以人民币兑换美元为 Topic，在价格相同的情况下，先出价者优先处理，则可以通过全局顺序的方式按照 FIFO 的方式进行发布和消费。</p>
+</div>
+<div class="section" id="id4">
+<h3>分区顺序<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>对于指定的一个 Topic，所有消息根据 sharding key 进行区块分区。
+同一个分区内的消息按照严格的 FIFO 顺序进行发布和消费。
+Sharding key 是顺序消息中用来区分不同分区的关键字段，和普通消息的 Key 是完全不同的概念。</p>
+<div class="figure align-default">
+<img alt="ordered-msg-2" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/49319/cn_zh/1534917248438/%E5%88%86%E5%8C%BA%E9%A1%BA%E5%BA%8F2.png" />
+</div>
+<p>适用场景</p>
+<p>性能要求高，以 sharding key 作为分区字段，在同一个区块中严格的按照 FIFO 原则进行消息发布和消费的场景。</p>
+<p>示例</p>
+<ul class="simple">
+<li><p>例一：用户注册需要发送发验证码，以用户 ID 作为 sharding key，
+那么同一个用户发送的消息都会按照先后顺序来发布和消费</p></li>
+<li><p>例二：电商的订单创建，以订单 ID 作为 sharding key，
+那么同一个订单相关的创建订单消息、订单支付消息、订单退款消息、订单物流消息都会按照先后顺序来发布和消费。</p></li>
+</ul>
+<p>阿里巴巴集团内部电商系统均使用分区顺序消息，既保证业务的顺序，同时又能保证业务的高性能。</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>全局顺序与分区顺序对比<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>在控制台创建顺序消息使用的不同类型 Topic 对比如下。</p>
+<p>消息类型对比</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 18%" />
+<col style="width: 24%" />
+<col style="width: 8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Topic 的消息类型</p></th>
+<th class="head"><p>支持事务消息</p></th>
+<th class="head"><p>支持定时/延时消息</p></th>
+<th class="head"><p>性能</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>无序消息（普通、事务、定时/延时消息）</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>最高</p></td>
+</tr>
+<tr class="row-odd"><td><p>分区顺序消息</p></td>
+<td><p>否</p></td>
+<td><p>否</p></td>
+<td><p>高</p></td>
+</tr>
+<tr class="row-even"><td><p>全局顺序消息</p></td>
+<td><p>否</p></td>
+<td><p>否</p></td>
+<td><p>一般</p></td>
+</tr>
+</tbody>
+</table>
+<p>发送方式对比</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+<col style="width: 19%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>消息类型</p></td>
+<td><p>支持可靠同步发送</p></td>
+<td><p>支持可靠异步发送</p></td>
+<td><p>支持 Oneway 发送</p></td>
+</tr>
+<tr class="row-even"><td><p>无序消息（普通、事务、定时/延时消息）</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+<td><p>是</p></td>
+</tr>
+<tr class="row-odd"><td><p>分区顺序消息</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>否</p></td>
+</tr>
+<tr class="row-even"><td><p>全局顺序消息</p></td>
+<td><p>是</p></td>
+<td><p>否</p></td>
+<td><p>否</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="id6">
+<h2>注意事项<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>顺序消息暂不支持广播模式。</p></li>
+<li><p>建议同一个 Group ID 只对应一种类型的 Topic，即不同时用于顺序消息和无序消息的收发。</p></li>
+<li><p>顺序消息不支持异步发送方式，否则将无法严格保证顺序。</p></li>
+<li><p>对于全局顺序消息，建议创建实例个数 &gt;=2。 同时运行多个实例的作用是为了防止工作实例意外退出时，业务中断。
+当工作实例退出时，其他实例可以立即接手工作，不会导致业务中断，实际同时工作的只会有一个实例。</p></li>
+</ul>
+</div>
+<div class="section" id="sdk">
+<h2>SDK 支持和示例代码<a class="headerlink" href="#sdk" title="永久链接至标题">¶</a></h2>
+<p>请使用 Java SDK 1.2.7 及以上版本。</p>
+<p>示例代码请参考以下文档：</p>
+<ul class="simple">
+<li><p>Java 收发送顺序消息</p></li>
+<li><p>C/C++ 收发顺序消息</p></li>
+<li><p>.NET 收发顺序消息</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="transaction_message.html" class="btn btn-neutral float-right" title="事务消息" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="deliver_message.html" class="btn btn-neutral float-left" title="定时和延时消息" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

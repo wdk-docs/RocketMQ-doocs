@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>订阅关系一致 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="控制台使用指南" href="../console/index.html" />
+    <link rel="prev" title="消费幂等" href="idempotent.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">最佳实践</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="topic_tag.html">Topic 与 Tag 最佳实践</a></li>
+<li class="toctree-l2"><a class="reference internal" href="idempotent.html">消费幂等</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">订阅关系一致</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">订阅关系图片示例</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">订阅关系代码示例</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">最佳实践</a> &raquo;</li>
+        
+      <li>订阅关系一致</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/practice/accordance.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>订阅关系一致<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>订阅关系一致指的是同一个消费者 Group ID 下所有 Consumer 实例的处理逻辑必须完全一致。一旦订阅关系不一致，消息消费的逻辑就会混乱，甚至导致消息丢失。消息队列 RocketMQ 里的一个消费者 Group ID 代表一个 Consumer 实例群组。对于大多数分布式应用来说，一个消费者 Group ID 下通常会挂载多个 Consumer 实例。</p>
+<p>由于消息队列 RocketMQ 的订阅关系主要由 Topic + Tag 共同组成，因此，保持订阅关系一致意味着同一个消费者 Group ID 下所有的实例需在以下两方面均保持一致：</p>
+<p>订阅的 Topic 必须一致</p>
+<p>订阅的 Topic 中的 Tag 必须一致</p>
+<div class="section" id="id2">
+<h2>订阅关系图片示例<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>正确订阅关系图片示例
+在下图中，多个 Group ID 订阅了多个 Topic，并且每个 Group ID 里的多个消费者实例的订阅关系保持了一致。</p>
+<p>订阅关系一致</p>
+<p>错误订阅关系图片示例
+在下图中，单个 Group ID 订阅了多个 Topic，但是该 Group ID 里的多个消费者实例的订阅关系并没有保持一致。</p>
+<p>订阅关系不一致</p>
+</div>
+<div class="section" id="id3">
+<h2>订阅关系代码示例<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>错误订阅关系代码示例
+【例一】</p>
+<p>以下例子中，同一个 Group ID 下的两个实例订阅的 Topic 不一致。</p>
+<p>Consumer 实例 1-1：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_jodie_test_1&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_A&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+<p>Consumer 实例 1-2：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_jodie_test_1&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_B &quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+<p>【例二】</p>
+<p>以下例子中，同一个 Group ID 下订阅 Topic 的 Tag 不一致。Consumer 实例 2-1 订阅了 TagA，而 Consumer 实例 2-2 未指定 Tag。</p>
+<p>Consumer 实例 2-1：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_jodie_test_2&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_A&quot;</span><span class="o">,</span> <span class="s">&quot;TagA&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+<p>Consumer 实例 2-2：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_jodie_test_2&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_A&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+<p>【例三】</p>
+<p>此例中，错误的原因有俩个：</p>
+<p>同一个 Group ID 下订阅 Topic 个数不一致。</p>
+<p>同一个 Group ID 下订阅 Topic 的 Tag 不一致。</p>
+<p>Consumer 实例 3-1：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_jodie_test_3&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_A&quot;</span><span class="o">,</span> <span class="s">&quot;TagA&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_B&quot;</span><span class="o">,</span> <span class="s">&quot;TagB&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+<p>Consumer 实例 3-2：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_jodie_test_3&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;jodie_test_A&quot;</span><span class="o">,</span> <span class="s">&quot;TagB&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../console/index.html" class="btn btn-neutral float-right" title="控制台使用指南" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="idempotent.html" class="btn btn-neutral float-left" title="消费幂等" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,383 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>消息重试 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="消息过滤" href="filter.html" />
+    <link rel="prev" title="事务消息" href="transaction_message.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">高级特性</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="common_message.html">普通消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deliver_message.html">定时和延时消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_message.html">顺序消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transaction_message.html">事务消息</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">消息重试</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">顺序消息的重试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">无序消息的重试</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id4">重试次数</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">配置方式</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html">消息过滤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exactly-once.html">Exactly-Once 投递语义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topic.html">集群消费和广播消费</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">高级特性</a> &raquo;</li>
+        
+      <li>消息重试</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/advanced/retry.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>消息重试<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>顺序消息的重试<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>对于顺序消息，当消费者消费消息失败后，消息队列 RocketMQ 会自动不断进行消息重试（每次间隔时间为 1 秒），
+这时，应用会出现消息消费被阻塞的情况。因此，建议您使用顺序消息时，务必保证应用能够及时监控并处理消费失败的情况，避免阻塞现象的发生。</p>
+</div>
+<div class="section" id="id3">
+<h2>无序消息的重试<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>对于无序消息（普通、定时、延时、事务消息），当消费者消费消息失败时，您可以通过设置返回状态达到消息重试的结果。</p>
+<p>无序消息的重试只针对集群消费方式生效；广播方式不提供失败重试特性，即消费失败后，失败消息不再重试，继续消费新的消息。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>以下内容都只针对无序消息生效。</p>
+</div>
+<div class="section" id="id4">
+<h3>重试次数<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>消息队列 RocketMQ 默认允许每条消息最多重试 16 次，每次重试的间隔时间如下：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 32%" />
+<col style="width: 18%" />
+<col style="width: 32%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>第几次重试</p></th>
+<th class="head"><p>与上次重试的间隔时间</p></th>
+<th class="head"><p>第几次重试</p></th>
+<th class="head"><p>与上次重试的间隔时间</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>10 秒</p></td>
+<td><p>9</p></td>
+<td><p>7 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>30 秒</p></td>
+<td><p>10</p></td>
+<td><p>8 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>1 分钟</p></td>
+<td><p>11</p></td>
+<td><p>9 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>2 分钟</p></td>
+<td><p>12</p></td>
+<td><p>10 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>3 分钟</p></td>
+<td><p>13</p></td>
+<td><p>20 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>4 分钟</p></td>
+<td><p>14</p></td>
+<td><p>30 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>5 分钟</p></td>
+<td><p>15</p></td>
+<td><p>1 小时</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>6 分钟</p></td>
+<td><p>16</p></td>
+<td><p>2 小时</p></td>
+</tr>
+</tbody>
+</table>
+<p>如果消息重试 16 次后仍然失败，消息将不再投递。如果严格按照上述重试时间间隔计算，某条消息在一直消费失败的前提下，将会在接下来的 4 小时 46 分钟之内进行 16 次重试，超过这个时间范围消息将不再重试投递。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>一条消息无论重试多少次，这些重试消息的 Message ID 不会改变。</p>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>配置方式<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="section" id="id6">
+<h4>消费失败后，重试配置方式<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h4>
+<p>集群消费方式下，消息消费失败后期望消息重试，需要在消息监听器接口的实现中明确进行配置（三种方式任选一种）：</p>
+<ul class="simple">
+<li><p>返回 Action.ReconsumeLater （推荐）</p></li>
+<li><p>返回 Null</p></li>
+<li><p>抛出异常</p></li>
+</ul>
+<p>示例代码</p>
+</div>
+<div class="section" id="id7">
+<h4>消费失败后，不重试配置方式<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h4>
+<p>集群消费方式下，消息失败后期望消息不重试，需要捕获消费逻辑中可能抛出的异常，最终返回 Action.CommitMessage，此后这条消息将不会再重试。</p>
+<p>示例代码</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MessageListenerImpl</span> <span class="kd">implements</span> <span class="n">MessageListener</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">doConsumeMessage</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">//捕获消费逻辑中的所有异常，并返回 Action.CommitMessage;</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="c1">//消息处理正常，直接返回 Action.CommitMessage;</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id8">
+<h4>自定义消息最大重试次数<a class="headerlink" href="#id8" title="永久链接至标题">¶</a></h4>
+<p>自定义消息队列 RocketMQ 的客户端日志配置，请升级 TCP Java SDK 版本到1.2.2及以上。</p>
+<p>消息队列 RocketMQ 允许 Consumer 启动的时候设置最大重试次数，重试时间间隔将按照如下策略：</p>
+<p>最大重试次数小于等于 16 次，则重试时间间隔同上表描述。
+最大重试次数大于 16 次，超过 16 次的重试时间间隔均为每次 2 小时。
+配置方式如下：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="c1">//配置对应 Group ID 的最大消息重试次数为 20 次</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">MaxReconsumeTimes</span><span class="o">,</span><span class="s">&quot;20&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span><span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ul class="simple">
+<li><p>消息最大重试次数的设置对相同 Group ID 下的所有 Consumer 实例有效。</p></li>
+<li><p>如果只对相同 Group ID 下两个 Consumer 实例中的其中一个设置了 MaxReconsumeTimes，那么该配置对两个 Consumer 实例均生效。</p></li>
+<li><p>配置采用覆盖的方式生效，即最后启动的 Consumer 实例会覆盖之前的启动实例的配置。</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id9">
+<h4>获取消息重试次数<a class="headerlink" href="#id9" title="永久链接至标题">¶</a></h4>
+<p>消费者收到消息后，可按照如下方式获取消息的重试次数：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MessageListenerImpl</span> <span class="kd">implements</span> <span class="n">MessageListener</span> <span class="o">{</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//获取消息的重试次数</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getReconsumeTimes</span><span class="o">());</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="filter.html" class="btn btn-neutral float-right" title="消息过滤" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="transaction_message.html" class="btn btn-neutral float-left" title="事务消息" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>跨云账号授权 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="权限策略" href="policy.html" />
+    <link rel="prev" title="RAM 主子账号授权" href="ram.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">访问控制（权限管理）</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ram.html">RAM 主子账号授权</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">跨云账号授权</a></li>
+<li class="toctree-l2"><a class="reference internal" href="policy.html">权限策略</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">访问控制（权限管理）</a> &raquo;</li>
+        
+      <li>跨云账号授权</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/access/across.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>跨云账号授权<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本页目录
+应用场景
+操作步骤
+后续步骤
+更多信息
+使用企业 A 的阿里云账号（主账号）创建 RAM 角色并为该角色授权，并将该角色赋予企业 B，即可实现使用企业 B 的主账号或其 RAM 用户（子账号）访问企业 A 的阿里云资源的目的。</p>
+<p>应用场景
+企业 A 购买了消息队列 RocketMQ 服务来开展业务，并希望将部分业务授权给企业 B。</p>
+<p>需求说明：</p>
+<p>A 希望能专注于业务系统，仅作为资源 Owner；而消息发布和订阅等任务委托或授权给企业 B。</p>
+<p>企业 A 希望当企业 B 的员工加入或离职时，无需做任何权限变更。企业 B 可以进一步将 A 的资源访问权限分配给 B 的 RAM 用户（员工或应用），并可以精细控制其员工或应用对资源的访问和操作权限。</p>
+<p>企业 A 希望如果双方合同终止，企业 A 随时可以撤销对企业 B 的授权。</p>
+<p>操作步骤
+首先需要使用企业 A 的阿里云账号（主账号）登录 RAM 控制台并为企业 B 的云账号创建 RAM 角色。</p>
+<p>具体步骤参见创建可信实体为阿里云账号的 RAM 角色。</p>
+<p>（可选）企业 A 为刚创建的 RAM 角色创建自定义策略。</p>
+<p>具体步骤参见创建自定义策略。</p>
+<p>目前，消息队列 RocketMQ 支持实例、Topic 和 Group 粒度的权限设置。详情参见权限策略。</p>
+<p>新创建的角色没有任何权限，因此企业 A 必须为该角色添加权限。可添加系统权限策略或自定义权限策略。</p>
+<p>具体步骤参见为 RAM 角色授权。</p>
+<p>使用企业 B 的阿里云账号（主账号）登录 RAM 控制台并创建 RAM 用户。</p>
+<p>具体步骤参见企业 B 创建 RAM 用户</p>
+<p>企业 B 为 RAM 用户添加 AliyunSTSAssumeRoleAccess 权限。</p>
+<p>具体步骤参见为 RAM 用户授权。</p>
+<p>企业 B 必须为其主账号下的 RAM 用户添加 AliyunSTSAssumeRoleAccess 权限，RAM 用户才能扮演企业 A 创建的 RAM 角色。</p>
+<p>企业 B 的 RAM 用户通过控制台或 API 访问企业 A 的资源。</p>
+<p>具体步骤参见后续步骤。</p>
+<p>后续步骤
+完成上述操作后，企业 B 的 RAM 用户即可按照以下步骤登录控制台访问企业 A 的云资源或调用 API。</p>
+<p>登录控制台访问企业 A 的云资源</p>
+<p>在浏览器中打开 RAM 用户登录入口 <a class="reference external" href="https://signin.aliyun.com/login.htm">https://signin.aliyun.com/login.htm</a>。</p>
+<p>在 RAM 用户登录页面上，输入 RAM 用户登录名称，单击下一步，并输入 RAM 用户密码，然后单击登录。</p>
+<p>说明：RAM 用户登录名称的格式为 &lt;$username&gt;&#64;&lt;$AccountAlias&gt; 或 &lt;$username&gt;&#64;&lt;$AccountAlias&gt;.onaliyun.com。 &lt;$AccountAlias&gt; 为账号别名，如果没有设置账号别名，则默认值为阿里云账号（主账号）的 ID。</p>
+<p>在子用户用户中心页面上，将鼠标指针移到右上角头像，并在浮层中单击切换身份。</p>
+<p>在阿里云－角色切换页面，输入企业 A 的企业别名或默认域名，以及角色名，然后单击切换。</p>
+<p>对企业 A 的阿里云资源执行操作。</p>
+<p>使用企业 B 的 RAM 用户通过 API 访问企业 A 的云资源</p>
+<p>要使用企业 B 的 RAM 用户通过 API 访问企业 A 的云资源，必须在代码中提供 RAM 用户的 AccessKeyId、AccessKeySecret 和 SecurityToken（临时安全令牌）。使用 STS 获取临时安全令牌的方法参见 STS 使用入门。</p>
+<p>STS 在消息队列 RocketMQ 中的使用
+注意：STS 功能只在消息队列 RocketMQ 的 Java SDK 1.7.8.Final 版本及以上支持。</p>
+<p>使用消息队列 RocketMQ 的 SDK 收发消息时，您只需将获取到的 AccessKey 和 Token 填入到以下属性中即可：</p>
+<blockquote>
+<div><p>// STS 的 AccessKeyId
+properties.put(PropertyKeyConst.AccessKey,”XXX”);
+// STS 的 AccessKeySecret
+properties.put(PropertyKeyConst.SecretKey, “XXX”);
+// STS 的 SecurityToken
+properties.put(PropertyKeyConst.SecurityToken, “XXX”);
+……</p>
+</div></blockquote>
+<p>更多信息
+RAM 主子账号授权</p>
+<p>权限策略概述</p>
+<p>什么是 RAM</p>
+<p>基本概念</p>
+<p>创建自定义策略</p>
+<p>创建 RAM 用户</p>
+<p>为 RAM 用户授权</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="policy.html" class="btn btn-neutral float-right" title="权限策略" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="ram.html" class="btn btn-neutral float-left" title="RAM 主子账号授权" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

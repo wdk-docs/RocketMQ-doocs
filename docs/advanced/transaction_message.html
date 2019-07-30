@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>事务消息 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="消息重试" href="retry.html" />
+    <link rel="prev" title="顺序消息" href="sequence_message.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">高级特性</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="common_message.html">普通消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="deliver_message.html">定时和延时消息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sequence_message.html">顺序消息</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">事务消息</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">概念介绍</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">适用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">交互流程</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">注意事项</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id6">更多信息</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="retry.html">消息重试</a></li>
+<li class="toctree-l2"><a class="reference internal" href="filter.html">消息过滤</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exactly-once.html">Exactly-Once 投递语义</a></li>
+<li class="toctree-l2"><a class="reference internal" href="topic.html">集群消费和广播消费</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">高级特性</a> &raquo;</li>
+        
+      <li>事务消息</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/advanced/transaction_message.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>事务消息<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>本文介绍消息队列 RocketMQ 事务消息的概念、适用场景、交互流程以及使用过程中的注意事项。</p>
+<div class="section" id="id2">
+<h2>概念介绍<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>事务消息：消息队列 RocketMQ 提供类似 X/Open XA 的分布式事务功能，通过消息队列 RocketMQ 事务消息能达到分布式事务的最终一致。</p></li>
+<li><p>半事务消息：暂不能投递的消息，发送方已经成功地将消息发送到了消息队列 RocketMQ 服务端，
+但是服务端未收到生产者对该消息的二次确认，此时该消息被标记成“暂不能投递”状态，处于该种状态下的消息即半事务消息。</p></li>
+<li><p>消息回查：由于网络闪断、生产者应用重启等原因，导致某条事务消息的二次确认丢失，
+消息队列 RocketMQ 服务端通过扫描发现某条消息长期处于“半事务消息”时，
+需要主动向消息生产者询问该消息的最终状态（Commit 或是 Rollback），
+该询问过程即消息回查。</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>适用场景<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>事务消息的适用场景示例：</p>
+<p>通过购物车进行下单的流程中，用户入口在购物车系统，交易下单入口在交易系统，两个系统之间的数据需要保持最终一致，
+这时可以通过事务消息进行处理。交易系统下单之后，发送一条交易下单的消息到消息队列 RocketMQ，
+购物车系统订阅消息队列 RocketMQ 的交易下单消息，做相应的业务处理，更新购物车数据。</p>
+</div>
+<div class="section" id="id4">
+<h2>交互流程<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>消息队列 RocketMQ 事务消息交互流程如下所示。</p>
+<div class="figure align-default">
+<img alt="事务消息" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/43348/cn_zh/1564042206614/%E4%BA%8B%E5%8A%A1%E6%B6%88%E6%81%AF.PNG" />
+</div>
+<p>事务消息发送步骤如下：</p>
+<ol class="arabic simple">
+<li><p>发送方将半事务消息发送至消息队列 RocketMQ 服务端。</p></li>
+<li><p>RocketMQ 服务端将消息持久化成功之后，向发送方返回 Ack 确认消息已经发送成功，此时消息为半事务消息。</p></li>
+<li><p>发送方开始执行本地事务逻辑。</p></li>
+<li><p>发送方根据本地事务执行结果向服务端提交二次确认（Commit 或是 Rollback），
+服务端收到 Commit 状态则将半事务消息标记为可投递，订阅方最终将收到该消息；服务端收到 Rollback 状态则删除半事务消息，订阅方将不会接受该消息。</p></li>
+</ol>
+<p>事务消息回查步骤如下：</p>
+<ol class="arabic simple">
+<li><p>在断网或者是应用重启的特殊情况下，上述步骤 4 提交的二次确认最终未到达服务端，经过固定时间后服务端将对该消息发起消息回查。</p></li>
+<li><p>发送方收到消息回查后，需要检查对应消息的本地事务执行的最终结果。</p></li>
+<li><p>发送方根据检查得到的本地事务的最终状态再次提交二次确认，服务端仍按照步骤 4 对半事务消息进行操作。</p></li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h2>注意事项<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<ol class="arabic simple">
+<li><p>事务消息的 Group ID 不能与其他类型消息的 Group ID 共用。与其他类型的消息不同，事务消息有回查机制，
+回查时消息队列 RocketMQ 服务端会根据 Group ID 去查询客户端。</p></li>
+<li><p>通过 ONSFactory.createTransactionProducer 创建事务消息的 Producer 时
+必须指定 LocalTransactionChecker 的实现类，处理异常情况下事务消息的回查。</p></li>
+<li><p>事务消息发送完成本地事务后，可在 execute 方法中返回以下三种状态：</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>TransactionStatus.CommitTransaction：提交事务，允许订阅方消费该消息。</p></li>
+<li><p>TransactionStatus.RollbackTransaction：回滚事务，消息将被丢弃不允许消费。</p></li>
+<li><p>TransactionStatus.Unknow：暂时无法判断状态，等待固定时间以后消息队列 RocketMQ 服务端向发送方进行消息回查。</p></li>
+</ul>
+</div></blockquote>
+<ol class="arabic simple" start="4">
+<li><p>可通过以下方式给每条消息设定第一次消息回查的最快时间：</p></li>
+</ol>
+<blockquote>
+<div><div class="highlight-Java notranslate"><div class="highlight"><pre><span></span><span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Message</span><span class="o">();</span>
+<span class="c1">// 在消息属性中添加第一次消息回查的最快时间，单位秒。例如，以下设置实际第一次回查时间为 120 秒 ~ 125 秒之间</span>
+<span class="n">message</span><span class="o">.</span><span class="na">putUserProperties</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">CheckImmunityTimeInSeconds</span><span class="o">,</span><span class="s">&quot;120&quot;</span><span class="o">);</span>
+<span class="c1">// 以上方式只确定事务消息的第一次回查的最快时间，实际回查时间向后浮动 0 秒 ~ 5 秒；如第一次回查后事务仍未提交，后续每隔 5 秒回查一次</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="id6">
+<h2>更多信息<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
+<p>收发事务消息的示例代码如下：</p>
+<ul>
+<li><p>TCP 协议</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Java 收发事务消息</p></li>
+<li><p>C/C++ 收发事务消息</p></li>
+<li><p>.NET 收发事务消息</p></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p>HTTP 协议（多语言）</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>消息队列 RocketMQ HTTP SDK 库</p></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="retry.html" class="btn btn-neutral float-right" title="消息重试" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="sequence_message.html" class="btn btn-neutral float-left" title="顺序消息" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

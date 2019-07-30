@@ -1,0 +1,291 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>什么是消息队列 RocketMQ？ &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="使用场景" href="scene.html" />
+    <link rel="prev" title="产品简介" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">产品简介</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">什么是消息队列 RocketMQ？</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">产品功能</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id2">功能概览图</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">多协议支持</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">管理工具</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id5">特色功能</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id6">专有云部署</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">消息收发模型</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="scene.html">使用场景</a></li>
+<li class="toctree-l2"><a class="reference internal" href="architecture.html">产品架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="limit.html">使用限制</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">产品简介</a> &raquo;</li>
+        
+      <li>什么是消息队列 RocketMQ？</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/synopsis/what.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rocketmq">
+<h1>什么是消息队列 RocketMQ？<a class="headerlink" href="#rocketmq" title="永久链接至标题">¶</a></h1>
+<p>消息队列 RocketMQ 是阿里巴巴集团自主研发的专业消息中间件，基于高可用分布式集群技术，提供消息订阅和发布、消息轨迹查询以及定时（延时）消息、资源统计、监控报警等一系列消息云服务，是企业级互联网架构的核心产品。 消息队列 RocketMQ 历史超过9年，为分布式应用系统提供异步解耦、削峰填谷的能力，同时具备海量消息堆积、高吞吐、可靠重试等互联网应用所需的特性，是阿里巴巴双11使用的核心产品。</p>
+<p>消息队列 RocketMQ 是阿里云正式商用的产品，目前在阿里云多个地域（Region）提供了高可用消息云服务，单个域内采用多机房部署，可用性极高，即使整个机房都不可用，仍然可以为应用提供消息发布服务，产品稳定性及可用性完全按照阿里巴巴内部标准来实施，无单点。</p>
+<p>消息队列 RocketMQ 目前提供 TCP 和 HTTP 协议层面的接入方式，支持 Java、C++、 .NET、Go、Python、Nodejs、PHP 这七种编程语言，方便不同编程语言开发的应用快速接入消息队列 RocketMQ 消息云服务。 用户可以将应用部署在阿里云 ECS、企业自建云，或者嵌入到移动端、物联网设备中与消息队列 RocketMQ 建立连接进行消息收发，同时本地开发者也可以通过公网接入消息队列 RocketMQ 服务进行消息收发。</p>
+<div class="section" id="id1">
+<h2>产品功能<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>消息队列 RocketMQ 提供了基于 TCP 和 HTTP 协议的多种编程语言的接入方式以及多维度的管理工具，同时针对不同的应用场景提供了一系列的特色功能。</p>
+<div class="section" id="id2">
+<h3>功能概览图<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h3>
+<img alt="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/29532/cn_zh/1553936362494/%E5%8A%9F%E8%83%BD%E7%AE%80%E4%BB%8B.PNG" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/29532/cn_zh/1553936362494/%E5%8A%9F%E8%83%BD%E7%AE%80%E4%BB%8B.PNG" />
+<p>产品功能</p>
+</div>
+<div class="section" id="id3">
+<h3>多协议支持<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>支持 HTTP 协议：采用 RESTful 标准，方便易用，快速接入，跨网络能力强，并支持七种语言客户端。</p></li>
+<li><p>支持 TCP 协议：区别于 HTTP 简单的接入方式，提供更为专业、可靠、稳定的 TCP 协议的 SDK 接入。</p></li>
+<li><p>支持 STOMP 协议：类似于 HTTP 的纯文本的协议机制，常用于脚本语言（如 Ruby、Python、Perl）和消息队列 RocketMQ Broker 进行轻量级交互。</p></li>
+</ul>
+</div>
+<div class="section" id="id4">
+<h3>管理工具<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>Web 控制台：支持 Topic 管理、生产者管理、消费者管理、消息查询、消息轨迹展示和查询、资源报表以及监控报警管理。</p></li>
+<li><p>OpenAPI：提供 API 便于将消息队列 RocketMQ 管理工具集成到自己的控制台。</p></li>
+<li><p>mqadmin 命令集：专有云输出提供一套丰富的管理命令集，以命令方式对消息队列 RocketMQ 服务进行管理。</p></li>
+</ul>
+</div>
+<div class="section" id="id5">
+<h3>特色功能<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>事务消息：实现类似 X/Open XA 的分布事务功能，以达到事务最终一致性状态。</p></li>
+<li><p>定时（延时）消息：允许消息生产者指定消息进行定时（延时）投递，最长支持 40 天。</p></li>
+<li><p>大消息：支持最大 4 MB 消息。</p></li>
+<li><p>消息轨迹：通过消息轨迹，能清晰定位消息从发布者发出，经由消息队列 RocketMQ 服务端，投递给消息订阅者的完整链路，方便定位排查问题。</p></li>
+<li><p>广播消费：允许同一个 Group ID 所标识的所有 Consumer 都各自消费某条消息一次。</p></li>
+<li><p>顺序消息：允许消息消费者按照消息发送的顺序对消息进行消费。</p></li>
+<li><p>重置消费进度：根据时间重置消费进度，允许用户进行消息回溯或者丢弃堆积消息。</p></li>
+<li><p>死信队列：将无法正常消费的消息储存到特殊的死信队列供后续处理。</p></li>
+<li><p>全球消息路由：用于全球不同地域之间的消息同步复制，保证地域之间的数据一致性。</p></li>
+</ul>
+</div>
+<div class="section" id="id6">
+<h3>专有云部署<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<ul class="simple">
+<li><p>专家定制：提供技术方案设计；专家现场技术支持与培训。</p></li>
+<li><p>灵活部署：支持专有云独立部署，同时支持混合云架构。</p></li>
+<li><p>运维管控：专有云支持 mqadmin 命令集、Open API 运维管理工具，方便管控平台集成以及统一运维。</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>消息收发模型<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>消息队列 RocketMQ 支持“发布/订阅”模型，消息发布者（生产者）可以将一条消息发送服务端的某个主题（Topic），
+多个消息接收方（消费者）订阅这个主题以接收该消息，如下图所示：</p>
+<img alt="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/29532/cn_zh/1541659862213/pub-sub%20model.png" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/29532/cn_zh/1541659862213/pub-sub%20model.png" />
+<p>Pub-Sub模型</p>
+<p>关于消息队列 RocketMQ 涉及的概念的详细解释，请参见名词解释。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="scene.html" class="btn btn-neutral float-right" title="使用场景" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="产品简介" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

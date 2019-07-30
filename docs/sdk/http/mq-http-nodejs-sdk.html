@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MQ Nodejs HTTP SDK &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="Class: MessageProperties" href="MessageProperties.html" />
+    <link rel="prev" title="HTTP 协议" href="http.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">SDK 参考</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../tcp/index.html">TCP 协议</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">HTTP 协议</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="http.html">HTTP 协议</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">MQ Nodejs HTTP SDK</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#id1">安装</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">文档</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id4">示例</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="MessageProperties.html">Class: MessageProperties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQClient.html">Class: MQClient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQConsumer.html">Class: MQConsumer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQProducer.html">Class: MQProducer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="MQTransProducer.html">Class: MQTransProducer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../stomp.html">STOMP 协议</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">SDK 参考</a> &raquo;</li>
+        
+          <li><a href="index.html">HTTP 协议</a> &raquo;</li>
+        
+      <li>MQ Nodejs HTTP SDK</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/sdk/http/mq-http-nodejs-sdk.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="mq-nodejs-http-sdk">
+<h1>MQ Nodejs HTTP SDK<a class="headerlink" href="#mq-nodejs-http-sdk" title="永久链接至标题">¶</a></h1>
+<p>阿里云MQ文件: <a class="reference external" href="http://www.aliyun.com/product/ons">http://www.aliyun.com/product/ons</a></p>
+<p>阿里云MQ控制台: <a class="reference external" href="https://ons.console.aliyun.com">https://ons.console.aliyun.com</a></p>
+<div class="section" id="id1">
+<h2>安装<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>添加依赖 <code class="docutils literal notranslate"><span class="pre">&#64;aliyunmq/mq-http-sdk</span></code> ，从npmjs获取最新版本</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>npm install @aliyunmq/mq-http-sdk --save
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>nodejs &gt;= 7.6.0</p>
+</div>
+</div>
+<div class="section" id="id2">
+<h2>文档<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p><a class="reference external" href="https://aliyunmq.github.io/mq-http-nodejs-sdk/">文档在这里</a></p>
+</div>
+<div class="section" id="id4">
+<h2>示例<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<div class="section" id="id5">
+<h3>发布消息<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="p">{</span>
+  <span class="nx">MQClient</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;@aliyunmq/mq-http-sdk&#39;</span><span class="p">);</span>
+
+<span class="c1">// 设置HTTP接入域名（此处以公共云生产环境为例）</span>
+<span class="kr">const</span> <span class="nx">endpoint</span> <span class="o">=</span> <span class="s2">&quot;${HTTP_ENDPOINT}&quot;</span><span class="p">;</span>
+<span class="c1">// AccessKey 阿里云身份验证，在阿里云服务器管理控制台创建</span>
+<span class="kr">const</span> <span class="nx">accessKeyId</span> <span class="o">=</span> <span class="s2">&quot;${ACCESS_KEY}&quot;</span><span class="p">;</span>
+<span class="c1">// SecretKey 阿里云身份验证，在阿里云服务器管理控制台创建</span>
+<span class="kr">const</span> <span class="nx">accessKeySecret</span> <span class="o">=</span> <span class="s2">&quot;${SECRET_KEY}&quot;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MQClient</span><span class="p">(</span><span class="nx">endpoint</span><span class="p">,</span> <span class="nx">accessKeyId</span><span class="p">,</span> <span class="nx">accessKeySecret</span><span class="p">);</span>
+
+<span class="c1">// 所属的 Topic</span>
+<span class="kr">const</span> <span class="nx">topic</span> <span class="o">=</span> <span class="s2">&quot;${TOPIC}&quot;</span><span class="p">;</span>
+<span class="c1">// Topic所属实例ID，默认实例为空</span>
+<span class="kr">const</span> <span class="nx">instanceId</span> <span class="o">=</span> <span class="s2">&quot;${INSTANCE_ID}&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">producer</span> <span class="o">=</span> <span class="nx">client</span><span class="p">.</span><span class="nx">getProducer</span><span class="p">(</span><span class="nx">instanceId</span><span class="p">,</span> <span class="nx">topic</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">try</span> <span class="p">{</span>
+    <span class="c1">// 循环发送100条消息</span>
+    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">50</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="kd">let</span> <span class="nx">res</span><span class="p">;</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">producer</span><span class="p">.</span><span class="nx">publishMessage</span><span class="p">(</span><span class="s2">&quot;hello mq.&quot;</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Publish message: MessageID:%s,BodyMD5:%s&quot;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">MessageId</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">MessageBodyMD5</span><span class="p">);</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">producer</span><span class="p">.</span><span class="nx">publishMessage</span><span class="p">(</span><span class="s2">&quot;hello mq.&quot;</span><span class="p">,</span> <span class="s2">&quot;tag&quot;</span><span class="p">);</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Publish message: MessageID:%s,BodyMD5:%s&quot;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">MessageId</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">MessageBodyMD5</span><span class="p">);</span>
+    <span class="p">}</span>
+
+  <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 消息发送失败，需要进行重试处理，可重新发送这条消息或持久化这条数据进行补偿处理</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">})();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>消费消息<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="p">{</span>
+  <span class="nx">MQClient</span>
+<span class="p">}</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;@aliyunmq/mq-http-sdk&#39;</span><span class="p">);</span>
+
+<span class="c1">// 设置HTTP接入域名（此处以公共云生产环境为例）</span>
+<span class="kr">const</span> <span class="nx">endpoint</span> <span class="o">=</span> <span class="s2">&quot;${HTTP_ENDPOINT}&quot;</span><span class="p">;</span>
+<span class="c1">// AccessKey 阿里云身份验证，在阿里云服务器管理控制台创建</span>
+<span class="kr">const</span> <span class="nx">accessKeyId</span> <span class="o">=</span> <span class="s2">&quot;${ACCESS_KEY}&quot;</span><span class="p">;</span>
+<span class="c1">// SecretKey 阿里云身份验证，在阿里云服务器管理控制台创建</span>
+<span class="kr">const</span> <span class="nx">accessKeySecret</span> <span class="o">=</span> <span class="s2">&quot;${SECRET_KEY}&quot;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">client</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">MQClient</span><span class="p">(</span><span class="nx">endpoint</span><span class="p">,</span> <span class="nx">accessKeyId</span><span class="p">,</span> <span class="nx">accessKeySecret</span><span class="p">);</span>
+
+<span class="c1">// 所属的 Topic</span>
+<span class="kr">const</span> <span class="nx">topic</span> <span class="o">=</span> <span class="s2">&quot;${TOPIC}&quot;</span><span class="p">;</span>
+<span class="c1">// 您在控制台创建的 Consumer ID(Group ID)</span>
+<span class="kr">const</span> <span class="nx">groupId</span> <span class="o">=</span> <span class="s2">&quot;${GROUP_ID}&quot;</span><span class="p">;</span>
+<span class="c1">// Topic所属实例ID，默认实例为空</span>
+<span class="kr">const</span> <span class="nx">instanceId</span> <span class="o">=</span> <span class="s2">&quot;${INSTANCE_ID}&quot;</span><span class="p">;</span>
+
+<span class="kr">const</span> <span class="nx">consumer</span> <span class="o">=</span> <span class="nx">client</span><span class="p">.</span><span class="nx">getConsumer</span><span class="p">(</span><span class="nx">instanceId</span><span class="p">,</span> <span class="nx">topic</span><span class="p">,</span> <span class="nx">groupId</span><span class="p">);</span>
+
+<span class="p">(</span><span class="nx">async</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="c1">// 循环消费消息</span>
+  <span class="k">while</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="c1">// 长轮询消费消息</span>
+      <span class="c1">// 长轮询表示如果topic没有消息则请求会在服务端挂住3s，3s内如果有消息可以消费则立即返回</span>
+      <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">consumer</span><span class="p">.</span><span class="nx">consumeMessage</span><span class="p">(</span>
+          <span class="mi">3</span><span class="p">,</span> <span class="c1">// 一次最多消费3条(最多可设置为16条)</span>
+          <span class="mi">3</span> <span class="c1">// 长轮询时间3秒（最多可设置为30秒）</span>
+          <span class="p">);</span>
+
+      <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 消费消息，处理业务逻辑</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Consume Messages, requestId:%s&quot;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">requestId</span><span class="p">);</span>
+        <span class="kr">const</span> <span class="nx">handles</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">message</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;\tMessageId:%s,Tag:%s,PublishTime:%d,NextConsumeTime:%d,FirstConsumeTime:%d,ConsumedTimes:%d,Body:%s&quot;</span><span class="p">,</span>
+              <span class="nx">message</span><span class="p">.</span><span class="nx">MessageId</span><span class="p">,</span> <span class="nx">message</span><span class="p">.</span><span class="nx">MessageTag</span><span class="p">,</span> <span class="nx">message</span><span class="p">.</span><span class="nx">PublishTime</span><span class="p">,</span> <span class="nx">message</span><span class="p">.</span><span class="nx">NextConsumeTime</span><span class="p">,</span> <span class="nx">message</span><span class="p">.</span><span class="nx">FirstConsumeTime</span><span class="p">,</span> <span class="nx">message</span><span class="p">.</span><span class="nx">ConsumedTimes</span><span class="p">,</span>
+              <span class="nx">message</span><span class="p">.</span><span class="nx">MessageBody</span><span class="p">);</span>
+          <span class="k">return</span> <span class="nx">message</span><span class="p">.</span><span class="nx">ReceiptHandle</span><span class="p">;</span>
+        <span class="p">});</span>
+
+        <span class="c1">// message.NextConsumeTime前若不确认消息消费成功，则消息会重复消费</span>
+        <span class="c1">// 消息句柄有时间戳，同一条消息每次消费拿到的都不一样</span>
+        <span class="nx">res</span> <span class="o">=</span> <span class="nx">await</span> <span class="nx">consumer</span><span class="p">.</span><span class="nx">ackMessage</span><span class="p">(</span><span class="nx">handles</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">res</span><span class="p">.</span><span class="nx">code</span> <span class="o">!=</span> <span class="mi">204</span><span class="p">)</span> <span class="p">{</span>
+          <span class="c1">// 某些消息的句柄可能超时了会导致确认不成功</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Ack Message Fail:&quot;</span><span class="p">);</span>
+          <span class="kr">const</span> <span class="nx">failHandles</span> <span class="o">=</span> <span class="nx">res</span><span class="p">.</span><span class="nx">body</span><span class="p">.</span><span class="nx">map</span><span class="p">((</span><span class="nx">error</span><span class="p">)=&gt;{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;\tErrorHandle:%s, Code:%s, Reason:%s\n&quot;</span><span class="p">,</span> <span class="nx">error</span><span class="p">.</span><span class="nx">ReceiptHandle</span><span class="p">,</span> <span class="nx">error</span><span class="p">.</span><span class="nx">ErrorCode</span><span class="p">,</span> <span class="nx">error</span><span class="p">.</span><span class="nx">ErrorMessage</span><span class="p">);</span>
+            <span class="k">return</span> <span class="nx">error</span><span class="p">.</span><span class="nx">ReceiptHandle</span><span class="p">;</span>
+          <span class="p">});</span>
+          <span class="nx">handles</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="nx">handle</span><span class="p">)=&gt;{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nx">failHandles</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="nx">handle</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+              <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;\tSucHandle:%s\n&quot;</span><span class="p">,</span> <span class="nx">handle</span><span class="p">);</span>
+            <span class="p">}</span>
+          <span class="p">});</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+          <span class="c1">// 消息确认消费成功</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Ack Message suc, RequestId:%s\n\t&quot;</span><span class="p">,</span> <span class="nx">res</span><span class="p">.</span><span class="nx">requestId</span><span class="p">,</span> <span class="nx">handles</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">));</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">Code</span><span class="p">.</span><span class="nx">indexOf</span><span class="p">(</span><span class="s2">&quot;MessageNotExist&quot;</span><span class="p">)</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 没有消息，则继续长轮询服务器</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Consume Message: no new message, RequestId:%s, Code:%s&quot;</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">RequestId</span><span class="p">,</span> <span class="nx">e</span><span class="p">.</span><span class="nx">Code</span><span class="p">);</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">e</span><span class="p">);</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">})();</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="MessageProperties.html" class="btn btn-neutral float-right" title="Class: MessageProperties" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="http.html" class="btn btn-neutral float-left" title="HTTP 协议" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

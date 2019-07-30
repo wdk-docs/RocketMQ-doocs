@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>名词解释 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="genindex.html" />
+    <link rel="search" title="搜索" href="search.html" />
+    <link rel="prev" title="微消息队列产品系列" href="price/micro.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="price/index.html">产品定价</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>名词解释</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/glossary.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>名词解释<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>版本:v2019.07.26 更新:2019 年 07 月 30 日</p>
+<p>本文主要对消息队列 RocketMQ 涉及的专有名词及术语进行定义和解析，方便您更好地理解相关概念并使用消息队列 RocketMQ。</p>
+<dl class="glossary simple">
+<dt id="term-topic">Topic</dt><dd><p>消息主题，一级消息类型，通过 Topic 对消息进行分类。详情请参见 Topic 与 Tag 最佳实践。</p>
+</dd>
+<dt id="term-message">Message</dt><dd><p>消息，消息队列中信息传递的载体。</p>
+</dd>
+<dt id="term-message-id">Message ID</dt><dd><p>消息的全局唯一标识，由消息队列 RocketMQ 系统自动生成，唯一标识某条消息。</p>
+</dd>
+<dt id="term-message-key">Message Key</dt><dd><p>消息的业务标识，由消息生产者（Producer）设置，唯一标识某个业务逻辑。</p>
+</dd>
+<dt id="term-tag">Tag</dt><dd><p>消息标签，二级消息类型，用来进一步区分某个 Topic 下的消息分类。详情请参见 Topic 与 Tag 最佳实践。</p>
+</dd>
+<dt id="term-producer">Producer</dt><dd><p>消息生产者，也称为消息发布者，负责生产并发送消息。</p>
+</dd>
+<dt id="term-6">Producer 实例</dt><dd><p>Producer 的一个对象实例，不同的 Producer 实例可以运行在不同进程内或者不同机器上。Producer 实例线程安全，可在同一进程内多线程之间共享。</p>
+</dd>
+<dt id="term-consumer">Consumer</dt><dd><p>消息消费者，也称为消息订阅者，负责接收并消费消息。</p>
+</dd>
+<dt id="term-8">Consumer 实例</dt><dd><p>Consumer 的一个对象实例，不同的 Consumer 实例可以运行在不同进程内或者不同机器上。一个 Consumer 实例内配置线程池消费消息。</p>
+</dd>
+<dt id="term-group">Group</dt><dd><p>一类 Producer 或 Consumer，这类 Producer 或 Consumer 通常生产或消费同一类消息，且消息发布或订阅的逻辑一致。</p>
+</dd>
+<dt id="term-group-id">Group ID</dt><dd><p>Group 的标识。</p>
+</dd>
+<dt id="term-11">队列</dt><dd><p>每个 Topic 下会由一到多个队列来存储消息。每个 Topic 对应队列数与消息类型以及实例所处地域（Region）相关，具体的队列数可提交工单咨询。
+注意：标准版实例不支持变更队列数，铂金版实例支持变更队列数。</p>
+</dd>
+<dt id="term-exactly-once">Exactly-Once 投递语义</dt><dd><p>Exactly-Once 投递语义是指发送到消息系统的消息只能被 Consumer 处理且仅处理一次，即使 Consumer 重试消息发送导致某消息重复投递，该消息在 Consumer 也只被消费一次。详情请参见 Exactly-Once 投递语义。</p>
+</dd>
+<dt id="term-13">集群消费</dt><dd><p>一个 Group ID 所标识的所有 Consumer 平均分摊消费消息。例如某个 Topic 有 9 条消息，一个 Group ID 有 3 个 Consumer 实例，那么在集群消费模式下每个实例平均分摊，只消费其中的 3 条消息。详情请参见集群消费和广播消费。</p>
+</dd>
+<dt id="term-14">广播消费</dt><dd><p>一个 Group ID 所标识的所有 Consumer 都会各自消费某条消息一次。例如某个 Topic 有 9 条消息，一个 Group ID 有 3 个 Consumer 实例，那么在广播消费模式下每个实例都会各自消费 9 条消息。详情请参见集群消费和广播消费。</p>
+</dd>
+<dt id="term-15">定时消息</dt><dd><p>Producer 将消息发送到消息队列 RocketMQ 服务端，但并不期望这条消息立马投递，而是推迟到在当前时间点之后的某一个时间投递到 Consumer 进行消费，该消息即定时消息。详情请参见定时和延时消息。</p>
+</dd>
+<dt id="term-16">延时消息</dt><dd><p>Producer 将消息发送到消息队列 RocketMQ 服务端，但并不期望这条消息立马投递，而是延迟一定时间后才投递到 Consumer 进行消费，该消息即延时消息。详情请参见定时和延时消息。</p>
+</dd>
+<dt id="term-17">事务消息</dt><dd><p>消息队列 RocketMQ 提供类似 X/Open XA 的分布事务功能，通过消息队列 RocketMQ 的事务消息能达到分布式事务的最终一致。详情请参见事务消息。</p>
+</dd>
+<dt id="term-18">顺序消息</dt><dd><p>消息队列 RocketMQ 提供的一种按照顺序进行发布和消费的消息类型，分为全局顺序消息和分区顺序消息。详情请参见顺序消息。</p>
+</dd>
+<dt id="term-19">全局顺序消息</dt><dd><p>对于指定的一个 Topic，所有消息按照严格的先入先出（FIFO）的顺序进行发布和消费。详情请参见顺序消息。</p>
+</dd>
+<dt id="term-20">分区顺序消息</dt><dd><p>对于指定的一个 Topic，所有消息根据 Sharding Key 进行区块分区。同一个分区内的消息按照严格的 FIFO 顺序进行发布和消费。Sharding Key 是顺序消息中用来区分不同分区的关键字段，和普通消息的 Message Key 是完全不同的概念。详情请参见顺序消息。</p>
+</dd>
+<dt id="term-21">消息堆积</dt><dd><p>Producer 已经将消息发送到消息队列 RocketMQ 的服务端，但由于 Consumer 消费能力有限，未能在短时间内将所有消息正确消费掉，此时在消息队列 RocketMQ 的服务端保存着未被消费的消息，该状态即消息堆积。</p>
+</dd>
+<dt id="term-22">消息过滤</dt><dd><p>Consumer 可以根据消息标签（Tag）对消息进行过滤，确保 Consumer 最终只接收被过滤后的消息类型。消息过滤在消息队列 RocketMQ 的服务端完成。详情请参见消息过滤。</p>
+</dd>
+<dt id="term-23">消息轨迹</dt><dd><p>在一条消息从 Producer 发出到 Consumer 消费处理过程中，由各个相关节点的时间、地点等数据汇聚而成的完整链路信息。通过消息轨迹，您能清晰定位消息从 Producer 发出，经由消息队列 RocketMQ 服务端，投递给 Consumer 的完整链路，方便定位排查问题。详情请参见消息轨迹简介。</p>
+</dd>
+<dt id="term-24">重置消费位点</dt><dd><p>以时间轴为坐标，在消息持久化存储的时间范围内（默认 3 天），重新设置 Consumer 对已订阅的 Topic 的消费进度，设置完成后 Consumer 将接收设定时间点之后由 Producer 发送到消息队列 RocketMQ 服务端的消息。详情请参见重置消费位点。</p>
+</dd>
+<dt id="term-25">死信队列</dt><dd><p>死信队列用于处理无法被正常消费的消息。当一条消息初次消费失败，消息队列 RocketMQ 会自动进行消息重试；达到最大重试次数后，若消费依然失败，则表明 Consumer 在正常情况下无法正确地消费该消息。此时，消息队列 RocketMQ 不会立刻将消息丢弃，而是将这条消息发送到该 Consumer 对应的特殊队列中。
+消息队列 RocketMQ 将这种正常情况下无法被消费的消息称为死信消息（Dead-Letter Message），将存储死信消息的特殊队列称为死信队列（Dead-Letter Queue）。
+详情请参见死信队列。</p>
+</dd>
+<dt id="term-26">消息路由</dt><dd><p>消息路由常用于不同地域之间的消息同步，保证地域之间的数据一致性。消息队列 RocketMQ 的全球消息路由功能依托阿里云优质基础设施实现的高速通道专线，可以高效地实现国内外不同地域之间的消息同步复制。详情请参见全球消息路由。</p>
+</dd>
+</dl>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="price/micro.html" class="btn btn-neutral float-left" title="微消息队列产品系列" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
