@@ -87,7 +87,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">访问控制（权限管理）</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">RAM 主子账号授权</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">RAM 主子账号授权</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">应用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">操作步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">后续步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">更多信息</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="across.html">跨云账号授权</a></li>
 <li class="toctree-l2"><a class="reference internal" href="policy.html">权限策略</a></li>
 </ul>
@@ -167,29 +173,29 @@
             
   <div class="section" id="ram">
 <h1>RAM 主子账号授权<a class="headerlink" href="#ram" title="永久链接至标题">¶</a></h1>
-<p>本页目录
-应用场景
-操作步骤
-后续步骤
-更多信息
-消息队列 RocketMQ 支持云账户（主账号）给 RAM 用户（子账号）授予 Topic 资源级别的权限，避免因暴露阿里云账号（主账号）密钥造成的安全风险。仅限有权限的 RAM 用户在消息队列 RocketMQ 的控制台上管理资源，以及通过 SDK/API 发布与订阅消息。</p>
-<p>应用场景
-企业 A 购买了消息队列 RocketMQ 服务，企业 A 的员工需要操作这些服务所涉及的资源，例如实例、Topic 或 Group 资源，比如有的负责创建资源，有的负责发布消息，还有的负责订阅消息。由于每个员工的工作职责不一样，需要的权限也不一样。</p>
+<p>消息队列 RocketMQ 支持云账户（主账号）给 RAM 用户（子账号）授予 Topic 资源级别的权限，避免因暴露阿里云账号（主账号）密钥造成的安全风险。仅限有权限的 RAM 用户在消息队列 RocketMQ 的控制台上管理资源，以及通过 SDK/API 发布与订阅消息。</p>
+<div class="section" id="id1">
+<h2>应用场景<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>企业 A 购买了消息队列 RocketMQ 服务，企业 A 的员工需要操作这些服务所涉及的资源，例如实例、Topic 或 Group 资源，比如有的负责创建资源，有的负责发布消息，还有的负责订阅消息。由于每个员工的工作职责不一样，需要的权限也不一样。</p>
 <p>具体场景说明如下：</p>
 <p>出于安全或信任的考虑，企业 A 不希望将云账号密钥直接透露给员工，而希望能给员工创建相应的用户账号。</p>
 <p>用户账号只能在授权的前提下操作资源，不需要对用户账号单独计量计费，所有开销都计入企业 A 云账号名下。</p>
 <p>企业 A 随时可以撤销用户账号的权限，也可以随时删除其创建的用户账号。</p>
 <p>此种场景下，A 的云账号可以将需要员工进行操作的资源进行细粒度的权限分隔。</p>
-<p>操作步骤
-企业 A 云账号创建 RAM 用户。</p>
+</div>
+<div class="section" id="id2">
+<h2>操作步骤<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>企业 A 云账号创建 RAM 用户。</p>
 <p>具体步骤参见创建 RAM 用户。</p>
 <p>（可选）企业 A 云账号可根据需求为刚创建的 RAM 用户创建自定义的策略。</p>
 <p>具体步骤参见创建自定义策略。</p>
 <p>目前，消息队列 RocketMQ 支持实例、Topic 和 Group 粒度的权限设置。详情参见权限策略。</p>
 <p>企业 A 云账号为 RAM 用户授权。</p>
 <p>具体步骤参见为 RAM 用户授权。</p>
-<p>后续步骤
-使用阿里云账号（主账号）创建好 RAM 用户后，即可将 RAM 用户的登录名称及密码或者 AccessKey 信息分发给其他用户。其他用户可以按照以下步骤使用 RAM 用户登录控制台或调用 API。</p>
+</div>
+<div class="section" id="id3">
+<h2>后续步骤<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>使用阿里云账号（主账号）创建好 RAM 用户后，即可将 RAM 用户的登录名称及密码或者 AccessKey 信息分发给其他用户。其他用户可以按照以下步骤使用 RAM 用户登录控制台或调用 API。</p>
 <p>登录控制台</p>
 <p>在浏览器中打开 RAM 用户登录入口 <a class="reference external" href="https://signin.aliyun.com/login.htm">https://signin.aliyun.com/login.htm</a>。</p>
 <p>在 RAM 用户登录页面上，输入 RAM 用户登录名称，单击下一步，并输入 RAM 用户密码，然后单击登录。</p>
@@ -197,14 +203,17 @@
 <p>在子用户用户中心页面上单击有权限的产品，即可访问控制台。
 使用 RAM 用户的 AccessKey 调用 API</p>
 <p>在代码中使用 RAM 用户的 AccessKeyId 和 AccessKeySecret 即可。</p>
-<p>更多信息
-跨云账号授权</p>
+</div>
+<div class="section" id="id4">
+<h2>更多信息<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>跨云账号授权</p>
 <p>权限策略概述</p>
 <p>什么是 RAM</p>
 <p>基本概念</p>
 <p>创建自定义策略</p>
 <p>创建 RAM 用户</p>
 <p>为 RAM 用户授权</p>
+</div>
 </div>
 
 

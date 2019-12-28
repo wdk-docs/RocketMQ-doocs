@@ -1,6 +1,8 @@
 MQ Nodejs HTTP SDK
 =========================
 
+`GitHub <https://github.com/aliyunmq/mq-http-nodejs-sdk>`_
+
 阿里云MQ文件: http://www.aliyun.com/product/ons
 
 阿里云MQ控制台: https://ons.console.aliyun.com

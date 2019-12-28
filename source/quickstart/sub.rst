@@ -9,11 +9,14 @@
 步骤四：发送消息
 步骤五：调用 SDK 订阅消息
 更多信息
+
 如果您使用的是 RAM 子账号，在被主账号授予某些实例中的 Topic 的权限后，不可直接使用主账号创建的 Group ID。请先登录消息队列 RocketMQ 控制台查看被授权的实例和 Topic，并另外创建 Group ID，即可调用 SDK 收发消息。
 
 RAM 主子账号的详细说明请参见 RAM 主子账号授权。
 
 前提条件
+---------------------------------
+
 由于您调用 SDK 收发消息时需使用 AccessKey（包含 AccessKeyId 和 AccessKeySecret）进行身份验证，请确保主账号已为您的 RAM 子账号授予了编程访问权限，允许该 RAM 子账号启用 AccessKey。详情请参见创建 RAM 用户。
 
 该 RAM 子账号已被授予了指定 Topic 的操作权限。
@@ -21,6 +24,8 @@ RAM 主子账号的详细说明请参见 RAM 主子账号授权。
 若还未获取授权，请联系主账号参见 RAM 主子账号授权进行授权。
 
 步骤一：查看已被授权的实例和 Topic
+---------------------------------
+
 在浏览器中打开 RAM 用户登录入口，并按提示完成登录。
 
 在产品列表中找到消息队列 RocketMQ ，并单击消息队列 RocketMQ。
@@ -32,6 +37,8 @@ RAM 主子账号的详细说明请参见 RAM 主子账号授权。
 在控制台左侧导航栏，单击 Topic 管理查看 RAM 子账号被授权的 Topic。
 
 步骤二：创建资源
+---------------------------------
+
 创建 Group ID
 查看了您的 RAM 子账号拥有哪些实例和 Topic 的操作权限后，您需要为消息的消费者（或生产者）创建客户端 ID ，即 Group ID。
 
@@ -59,6 +66,8 @@ Group ID 和 Topic 的关系是 N：N，即一个消费者可以订阅多个 Top
 创建 AccessKey 的具体步骤请参见创建AccessKey。
 
 步骤三：获取接入点
+---------------------------------
+
 在控制台创建好资源后，您还需要通过控制台获取实例或地域的接入点。在收发消息时，您需要为生产端和消费端配置该接入点，以此接入某个具体实例或地域的服务。
 
 在控制台左侧导航栏选择实例管理。
@@ -78,6 +87,8 @@ HTTP 协议：您在控制台看到 HTTP 协议接入点是某个地域的接入
 完成以上准备工作后，您就可以运行示例代码，用消息队列 RocketMQ 进行消息发送和订阅了。
 
 步骤四：发送消息
+---------------------------------
+
 您可以通过以下方式发送消息：
 
 控制台发送消息：用于快速验证 Topic 资源的可用性，主要用作测试。
@@ -101,12 +112,15 @@ HTTP 协议：您在控制台看到 HTTP 协议接入点是某个地域的接入
 
 Maven 方式引入依赖：
 
-<dependency>
-   <groupId>com.aliyun.openservices</groupId>
-   <artifactId>ons-client</artifactId>
-   <version>"XXX"</version>
-   //设置为 Java SDK 的最新版本号
-</dependency>
+..code:: xml
+
+    <dependency>
+    <groupId>com.aliyun.openservices</groupId>
+    <artifactId>ons-client</artifactId>
+    <version>"XXX"</version>
+    //设置为 Java SDK 的最新版本号
+    </dependency>
+
 Java SDK 的最新版本号，请参见 Java SDK 版本说明。
 
 下载依赖 JAR 包：
@@ -114,6 +128,8 @@ Java SDK 的最新版本号，请参见 Java SDK 版本说明。
 Java SDK 最新版本的下载链接，请参见 Java SDK 版本说明。
 
 根据以下说明设置相关参数，运行示例代码：
+
+.. code:: java
 
  import com.aliyun.openservices.ons.api.Message;
  import com.aliyun.openservices.ons.api.Producer;
@@ -160,6 +176,7 @@ Java SDK 最新版本的下载链接，请参见 Java SDK 版本说明。
          producer.shutdown();
      }
  }
+
 查看消息是否发送成功
 消息发送后，您可以在控制台查看消息发送状态，步骤如下：
 
@@ -172,6 +189,8 @@ Java SDK 最新版本的下载链接，请参见 Java SDK 版本说明。
 注意：此步骤演示的是第一次使用消息队列 RocketMQ 的场景，此时消费者从未启动过，所以消息状态显示暂无消费数据。要启动消费者并进行消息订阅请继续下一步操作订阅消息。更多消息状态请参见消息查询和查询消息轨迹。
 
 步骤五：调用 SDK 订阅消息
+---------------------------------
+
 消息发送成功后，需要启动消费者来订阅消息。下文以调用 TCP Java SDK 为例说明如何订阅消息。
 
 调用 TCP Java SDK 订阅消息
@@ -217,6 +236,8 @@ public class ConsumerTest {
 如果是否在线显示为是，且订阅关系一致，则说明订阅成功。否则说明订阅失败。
 
 更多信息
+---------------------------------
+
 主账号的操作步骤请参见主账号快速入门。
 
 如需了解文中所涉及的名词概念，请参见名词解释。

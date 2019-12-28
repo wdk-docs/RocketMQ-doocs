@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>收到订阅关系不一致告警后怎么办？ &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="../_static/language_data.js"></script>
+        <script type="text/javascript" src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="计费相关" href="charging.html" />
+    <link rel="prev" title="常见问题" href="faq.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">常见问题</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="faq.html">常见问题</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">收到订阅关系不一致告警后怎么办？</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">问题描述</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">问题分析</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#group-id-topic">【原因1】配置了相同 Group ID 的不同客户端订阅的 Topic 不一致。</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#group-id-topic-tag">【原因2】同一个 Group ID 下的不同客户端订阅的 Topic 相同，但 Tag 不同。</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">解决方案</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">结果验证</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="charging.html">计费相关</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load-balancing.html">消息负载均衡策略</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bugs.html">故障处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory.html">应用内存不足</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">常见问题</a> &raquo;</li>
+        
+      <li>收到订阅关系不一致告警后怎么办？</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/faq/relationship-inconsistency.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>收到订阅关系不一致告警后怎么办？<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="section" id="id2">
+<h2>问题描述<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>Group ID 订阅的部分消息未收到。登录消息队列 RocketMQ 控制台，
+单击消息查询 &gt; 按 Message ID 查询消息，消息显示已至少被消费—次，但从消费逻辑判断未消费。</p></li>
+<li><p>登录消息队列 RocketMQ 控制台，单击消费者管理 &gt; 消费者状态，订阅关系是否一致栏显示否。</p></li>
+</ul>
+</div>
+<div class="section" id="id3">
+<h2>问题分析<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>消息队列 RocketMQ 里的一个 Group ID 代表一个 Consumer 实例群组。
+对大多数分布式应用来说，一个 Group ID 下通常会挂载多个 Consumer 实例。
+订阅关系一致指，同一个 Group ID 下所有的 Consumer 实例的 Topic 和 Tag 都必须完全一致。</p>
+<p>若同一个 Group ID 下的 Consumer 实例配置了不同的 Topic，
+或是 Topic 相同但 Tag 不同 ，
+订阅关系就会不一致。一旦订阅关系不一致，消息消费的逻辑就会混乱，导致消息丢失。</p>
+<div class="section" id="group-id-topic">
+<h3>【原因1】配置了相同 Group ID 的不同客户端订阅的 Topic 不一致。<a class="headerlink" href="#group-id-topic" title="永久链接至标题">¶</a></h3>
+<p><strong>错误示例</strong></p>
+<p>同一个 Group ID（GID-MQ-FAQ）订阅的 Topic 不同（分别是 MQ-FAQ-TOPIC-1、MQ-FAQ-TOPIC-2）。</p>
+<p><strong>JVM-1 上的代码</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID-MQ-FAQ&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ-FAQ-TOPIC-1&quot;</span><span class="o">,</span> <span class="s">&quot;NM-MQ-FAQ&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Receive: &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</pre></div>
+</div>
+<p><strong>JVM-2 上的代码</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID-MQ-FAQ&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ-FAQ-TOPIC-2&quot;</span><span class="o">,</span> <span class="s">&quot;NM-MQ-FAQ&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Receive: &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="group-id-topic-tag">
+<h3>【原因2】同一个 Group ID 下的不同客户端订阅的 Topic 相同，但 Tag 不同。<a class="headerlink" href="#group-id-topic-tag" title="永久链接至标题">¶</a></h3>
+<p><strong>错误示例</strong></p>
+<p>同一个 Group ID（GID-MQ-FAQ）订阅的 Topic 不同（分别是 MQ-FAQ-TOPIC-1、MQ-FAQ-TOPIC-2）。</p>
+<p><strong>JVM-1 上的代码</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID-MQ-FAQ&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ-FAQ-TOPIC-1&quot;</span><span class="o">,</span> <span class="s">&quot;NM-MQ-FAQ&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Receive: &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</pre></div>
+</div>
+<p><strong>JVM-2 上的代码</strong></p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+<span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID-MQ-FAQ&quot;</span><span class="o">);</span>
+<span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;MQ-FAQ-TOPIC-2&quot;</span><span class="o">,</span> <span class="s">&quot;NM-MQ-FAQ&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Receive: &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">consumer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>解决方案<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>请按照如下步骤操作：</p>
+<ol class="arabic simple">
+<li><p>检查不同客户端的订阅代码。保持配置相同 Group ID 的所有客户端的订阅关系—致，包括订阅的 Topic 与 Tag。</p></li>
+<li><p>重启所有客户端应用。</p></li>
+</ol>
+</div>
+<div class="section" id="id5">
+<h2>结果验证<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<ul class="simple">
+<li><p>消费者能接收到所有期望被接收的消息。</p></li>
+<li><p>登录消息队列 RocketMQ 控制台，单击消费者管理 &gt; 消费者状态，订阅关系是否一致栏显示是。</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="charging.html" class="btn btn-neutral float-right" title="计费相关" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="faq.html" class="btn btn-neutral float-left" title="常见问题" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

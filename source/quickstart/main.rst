@@ -1,18 +1,13 @@
 主账号快速入门
 ====================
 
-本页目录
-步骤一：开通服务
-步骤二：创建资源
-步骤三：获取接入点
-步骤四：发送消息
-步骤五：调用 SDK 订阅消息
-更多信息
 如果您使用的是阿里云主账号，则可以通过本文来体验从开通服务、创建资源、到使用 SDK 收发消息的完整流程，快速上手消息队列 RocketMQ。
 
 无论您使用的是消息队列 RocketMQ 支持的何种协议、何种语言，前三个步骤都一致，只是在控制台上具体填写的信息会略有不同，请以控制台说明为准。但在调用 SDK 时，不同协议和语言的示例代码有所不同，本文以 TCP 协议下的 Java SDK 为例进行说明。
 
 步骤一：开通服务
+---------------------------------
+
 如果您已开通消息队列 RocketMQ 服务，请直接跳转至步骤二：创建资源开始操作。
 
 在消息队列 RocketMQ 产品页，单击立即开通。
@@ -22,6 +17,8 @@
 在确认订单页面，选择我已阅读并同意《消息队列MQ服务协议》，再单击立即开通即可完成开通。
 
 步骤二：创建资源
+---------------------------------
+
 在使用消息队列 RocketMQ 时，请注意以下网络访问限制：
 
 Topic 和 Group ID 需创建在同一个地域（Region）下的同一个实例中才能互通。例如，当某 Topic 创建在华东1（杭州）下的实例 A 中，那么该 Topic 只能被在华东1（杭州）下的实例 A 中创建的 Group ID 对应的生产端和消费端访问。
@@ -91,6 +88,8 @@ Group ID 和 Topic 的关系是 N：N，即一个消费者可以订阅多个 Top
 创建 AccessKey 的具体步骤请参见创建AccessKey。
 
 步骤三：获取接入点
+---------------------------------
+
 在控制台创建好资源后，您需通过控制台获取实例的接入点。在收发消息时，您需要为生产端和消费端配置该接入点，以此接入某个具体实例或地域的服务。
 
 在控制台左侧导航栏，单击实例管理。
@@ -110,6 +109,8 @@ HTTP 协议：您在控制台看到的 HTTP 协议接入点是某个地域的接
 完成以上准备工作后，您就可以运行示例代码，用消息队列 RocketMQ 进行消息发送和订阅了。
 
 步骤四：发送消息
+---------------------------------
+
 您可以通过以下方式发送消息：
 
 控制台发送消息：用于快速验证 Topic 资源的可用性，主要用作测试。
@@ -133,12 +134,15 @@ HTTP 协议：您在控制台看到的 HTTP 协议接入点是某个地域的接
 
 Maven 方式引入依赖：
 
-<dependency>
-   <groupId>com.aliyun.openservices</groupId>
-   <artifactId>ons-client</artifactId>
-   <version>"XXX"</version>
-   //设置为 Java SDK 的最新版本号
-</dependency>
+.. code:: xml
+
+    <dependency>
+    <groupId>com.aliyun.openservices</groupId>
+    <artifactId>ons-client</artifactId>
+    <version>"XXX"</version>
+    //设置为 Java SDK 的最新版本号
+    </dependency>
+
 Java SDK 的最新版本号，请参见 Java SDK 版本说明。
 
 下载依赖 JAR 包：
@@ -146,6 +150,8 @@ Java SDK 的最新版本号，请参见 Java SDK 版本说明。
 Java SDK 最新版本的下载链接，请参见 Java SDK 版本说明。
 
 根据以下说明设置相关参数，运行示例代码：
+
+.. code:: java
 
  import com.aliyun.openservices.ons.api.Message;
  import com.aliyun.openservices.ons.api.Producer;
@@ -192,6 +198,7 @@ Java SDK 最新版本的下载链接，请参见 Java SDK 版本说明。
          producer.shutdown();
      }
  }
+
 查看消息是否发送成功
 消息发送后，您可以在控制台查看消息发送状态，步骤如下：
 
@@ -204,41 +211,46 @@ Java SDK 最新版本的下载链接，请参见 Java SDK 版本说明。
 注意：此步骤演示的是第一次使用消息队列 RocketMQ 的场景，此时消费者从未启动过，所以消息状态显示暂无消费数据。要启动消费者并进行消息订阅请继续下一步操作订阅消息。更多消息状态请参见消息查询和查询消息轨迹。
 
 步骤五：调用 SDK 订阅消息
+---------------------------
+
 消息发送成功后，需要启动消费者来订阅消息。下文以调用 TCP Java SDK 为例说明如何订阅消息。
 
 调用 TCP Java SDK 订阅消息
 您可以运行以下示例代码来启动消费者，并测试订阅消息的功能。请按照说明正确设置相关参数。
 
-import com.aliyun.openservices.ons.api.Action;
-import com.aliyun.openservices.ons.api.ConsumeContext;
-import com.aliyun.openservices.ons.api.Consumer;
-import com.aliyun.openservices.ons.api.Message;
-import com.aliyun.openservices.ons.api.MessageListener;
-import com.aliyun.openservices.ons.api.ONSFactory;
-import com.aliyun.openservices.ons.api.PropertyKeyConst;
-import java.util.Properties;
-public class ConsumerTest {
-    public static void main(String[] args) {
-        Properties properties = new Properties();
-        // 您在控制台创建的 Group ID
-        properties.put(PropertyKeyConst.GROUP_ID, "XXX");
-        // 鉴权用 AccessKeyId，在阿里云服务器管理控制台创建
-        properties.put(PropertyKeyConst.AccessKey, "XXX");
-        // 鉴权用 AccessKeySecret，在阿里云服务器管理控制台创建
-        properties.put(PropertyKeyConst.SecretKey, "XXX");
-        // 设置 TCP 接入域名，进入控制台的实例管理页面，在页面上方选择实例后，在实例信息中的“获取接入点信息”区域查看
-        properties.put(PropertyKeyConst.NAMESRV_ADDR,"XXX");
-        Consumer consumer = ONSFactory.createConsumer(properties);
-        consumer.subscribe("TopicTestMQ", "*", new MessageListener() {
-            public Action consume(Message message, ConsumeContext context) {
-                System.out.println("Receive: " + message);
-                return Action.CommitMessage;
-            }
-        });
-        consumer.start();
-        System.out.println("Consumer Started");
+.. code:: java
+
+    import com.aliyun.openservices.ons.api.Action;
+    import com.aliyun.openservices.ons.api.ConsumeContext;
+    import com.aliyun.openservices.ons.api.Consumer;
+    import com.aliyun.openservices.ons.api.Message;
+    import com.aliyun.openservices.ons.api.MessageListener;
+    import com.aliyun.openservices.ons.api.ONSFactory;
+    import com.aliyun.openservices.ons.api.PropertyKeyConst;
+    import java.util.Properties;
+    public class ConsumerTest {
+        public static void main(String[] args) {
+            Properties properties = new Properties();
+            // 您在控制台创建的 Group ID
+            properties.put(PropertyKeyConst.GROUP_ID, "XXX");
+            // 鉴权用 AccessKeyId，在阿里云服务器管理控制台创建
+            properties.put(PropertyKeyConst.AccessKey, "XXX");
+            // 鉴权用 AccessKeySecret，在阿里云服务器管理控制台创建
+            properties.put(PropertyKeyConst.SecretKey, "XXX");
+            // 设置 TCP 接入域名，进入控制台的实例管理页面，在页面上方选择实例后，在实例信息中的“获取接入点信息”区域查看
+            properties.put(PropertyKeyConst.NAMESRV_ADDR,"XXX");
+            Consumer consumer = ONSFactory.createConsumer(properties);
+            consumer.subscribe("TopicTestMQ", "*", new MessageListener() {
+                public Action consume(Message message, ConsumeContext context) {
+                    System.out.println("Receive: " + message);
+                    return Action.CommitMessage;
+                }
+            });
+            consumer.start();
+            System.out.println("Consumer Started");
+        }
     }
-}
+
 查看消息订阅是否成功
 完成上述步骤后，您可以在控制台查看消费者是否启动成功，即消息订阅是否成功。
 
@@ -249,6 +261,8 @@ public class ConsumerTest {
 如果是否在线显示为是，且订阅关系一致，则说明订阅成功。否则说明订阅失败。
 
 更多信息
+---------------------------------
+
 子账号的操作步骤请参见子账号快速入门。
 
 如需了解文中所涉及的名词概念，请参见名词解释。

@@ -1,0 +1,700 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="zh-CN" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="zh-CN" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>使用 Exactly-Once 投递语义收发消息 &mdash; RocketMQ docs v2019.07.26 文档</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="索引" href="../../../genindex.html" />
+    <link rel="search" title="搜索" href="../../../search.html" />
+    <link rel="next" title="C/C++ SDK" href="../c.html" />
+    <link rel="prev" title="Java SDK" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> RocketMQ docs
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../synopsis/index.html">产品简介</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../advanced/index.html">高级特性</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../quickstart/index.html">快速入门</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">SDK 参考</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">TCP 协议</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">Java SDK</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">使用 Exactly-Once 投递语义收发消息</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../c.html">C/C++ SDK</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../net.html">.NET SDK</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../http/index.html">HTTP 协议</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../stomp.html">STOMP 协议</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../access/index.html">访问控制（权限管理）</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../practice/index.html">最佳实践</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../console/index.html">控制台使用指南</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">管控 API 参考</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq/index.html">常见问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../video/index.html">视频教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../price/index.html">产品定价</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../glossary.html">名词解释</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RocketMQ docs</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">SDK 参考</a> &raquo;</li>
+        
+          <li><a href="../index.html">TCP 协议</a> &raquo;</li>
+        
+          <li><a href="index.html">Java SDK</a> &raquo;</li>
+        
+      <li>使用 Exactly-Once 投递语义收发消息</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/sdk/tcp/java/Exactly-Once.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exactly-once">
+<h1>使用 Exactly-Once 投递语义收发消息<a class="headerlink" href="#exactly-once" title="永久链接至标题">¶</a></h1>
+<p>本文主要介绍如何使用消息队列 RocketMQ 的 Exactly-Once 投递语义收发消息，以保证消息的最终处理结果写入到数据库有且仅有一次。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>目前 Exactly-Once 投递语义仅在 Java SDK 中支持。相关 SDK 下载，请参见 Java SDK 版本说明。</p>
+</div>
+<div class="section" id="id1">
+<h2>背景信息<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h2>
+<p>消息队列 RocketMQ 的 Exactly-Once 投递语义适用于 <strong>接收消息 &gt; 处理消息 &gt; 结果持久化到数据库</strong> 的流程，
+能够保证您的每一条消息消费的最终处理结果写入到您的数据库有且仅有一次，保证消息消费的幂等。</p>
+<p>更多 Exactly-Once 投递语义的概念和典型使用场景，请参见 Exactly-Once 投递语义。</p>
+</div>
+<div class="section" id="id2">
+<h2>操作步骤<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>若要使用该语义，请按照以下步骤进行操作：</p>
+<ul>
+<li><p>在应用中添加 SDK 包依赖和 Spring 3.0 以上版本的依赖。详情请见步骤一：添加依赖。</p></li>
+<li><p>在用于存储消息消费结果的数据库中创建 transaction_record 表。详情请见步骤二：创建消费事务表。</p>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<p>存储消息消费结果的数据库系统必须支持本地事务。</p>
+</div>
+</li>
+<li><p>在消息生产端使用 PropertyKeyConst.EXACTLYONCE_DELIVERY 属性设置打开 Exactly-Once 投递语义。详情请见步骤三：生产端开启 Exactly-Once 投递语义。</p></li>
+<li><p>在消息消费端创建 ExactlyOnceConsumer，并开启 Exactly-Once 的消费模式。详情请见步骤四：消费端开启 Exactly-Once 投递语义。</p></li>
+</ul>
+<div class="section" id="id3">
+<h3>步骤一：添加依赖<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h3>
+<p>消息队列 RocketMQ 的 ExactlyOnceConsumer 在客户端 SDK ons-client-ext-1.8.0.Final 中发布，若要使用 Exactly-Once 投递语义，需在应用中依赖该 SDK。</p>
+<p>另外，ExactlyOnceConsumer 基于 Spring 实现了通过注解 &#64;MQTransaction 开启 Exactly-Once 消费的方式，因此还需要在应用中增加 Spring 3.0 以上版本的依赖。</p>
+<p>完整的依赖内容如下所示。</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>com.aliyun.openservices<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>ons-client-ext<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>1.8.0.Final<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-context<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${spring-version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-jdbc<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>${spring-version}<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id4">
+<h3>步骤二：创建消费事务表<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h3>
+<p>若要使用消息队列 RocketMQ 的 Exactly-Once 投递语义，您需要在业务处理结果持久化的数据库中创建一张 transaction_record 表，保证此表与存储业务处理结果的表在同一个数据库内，且该数据库支持本地事务。</p>
+<p>目前，消息队列 RocketMQ 的 Exactly-Once 投递语义支持您的业务访问 MySQL 和 SQLServer 两种类型的数据源。这两种类型的数据源下 transaction_record 表的建表语句如以下所示。</p>
+<p>MySQL</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">transaction_record</span><span class="o">`</span> <span class="p">(</span>
+  <span class="o">`</span><span class="n">consumer_group</span><span class="o">`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">message_id</span><span class="o">`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">topic_name</span><span class="o">`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">ctime</span><span class="o">`</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">queue_id</span><span class="o">`</span> <span class="nb">int</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="o">`</span><span class="k">offset</span><span class="o">`</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">broker_name</span><span class="o">`</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="k">DEFAULT</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+  <span class="o">`</span><span class="n">id</span><span class="o">`</span> <span class="nb">bigint</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="n">AUTO_INCREMENT</span><span class="p">,</span>
+  <span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">),</span>
+  <span class="k">UNIQUE</span> <span class="k">KEY</span> <span class="o">`</span><span class="n">message_id_unique_key</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">message_id</span><span class="o">`</span><span class="p">),</span>
+  <span class="k">KEY</span> <span class="o">`</span><span class="n">ctime_key</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">ctime</span><span class="o">`</span><span class="p">),</span>
+  <span class="k">KEY</span> <span class="o">`</span><span class="n">load_key</span><span class="o">`</span> <span class="p">(</span><span class="o">`</span><span class="n">queue_id</span><span class="o">`</span><span class="p">,</span><span class="o">`</span><span class="n">broker_name</span><span class="o">`</span><span class="p">,</span><span class="o">`</span><span class="n">topic_name</span><span class="o">`</span><span class="p">,</span><span class="o">`</span><span class="n">ctime</span><span class="o">`</span><span class="p">)</span>
+<span class="p">)</span> <span class="n">ENGINE</span><span class="o">=</span><span class="n">InnoDB</span> <span class="k">DEFAULT</span> <span class="n">CHARSET</span><span class="o">=</span><span class="n">utf8</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>SQLServer</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">transaction_record</span>
+<span class="p">(</span>
+    <span class="p">[</span><span class="n">consumer_group</span><span class="p">]</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="n">message_id</span><span class="p">]</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="n">topic_name</span><span class="p">]</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">255</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="n">ctime</span><span class="p">]</span> <span class="nb">bigint</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="n">queue_id</span><span class="p">]</span> <span class="nb">int</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="k">offset</span><span class="p">]</span> <span class="nb">bigint</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="n">broker_name</span><span class="p">]</span> <span class="nb">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">NOT</span> <span class="k">NULL</span> <span class="p">,</span>
+    <span class="p">[</span><span class="n">id</span><span class="p">]</span> <span class="nb">bigint</span> <span class="k">IDENTITY</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>  <span class="k">PRIMARY</span> <span class="k">KEY</span>
+<span class="p">)</span>
+<span class="k">CREATE</span> <span class="n">NONCLUSTERED</span>  <span class="k">INDEX</span> <span class="n">load_key</span> <span class="k">ON</span> <span class="n">transaction_record</span>
+<span class="p">(</span><span class="n">queue_id</span><span class="p">,</span> <span class="n">broker_name</span><span class="p">,</span> <span class="n">topic_name</span><span class="p">,</span> <span class="n">ctime</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="k">UNIQUE</span> <span class="n">NONCLUSTERED</span> <span class="k">INDEX</span> <span class="n">message_id_uniq_key</span> <span class="k">ON</span> <span class="n">transaction_record</span>
+<span class="p">(</span><span class="n">message_id</span><span class="p">);</span>
+<span class="k">CREATE</span> <span class="n">NONCLUSTERED</span> <span class="k">INDEX</span> <span class="n">ctime_key</span> <span class="k">ON</span> <span class="n">transaction_record</span>
+<span class="p">(</span><span class="n">ctime</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注解</p>
+<ul class="simple">
+<li><p>对于企业版 SQL Server 数据库，建议您通过ALTER DATABASE [USERDB] SET PARTNER SAFETY OFF;打开异步模式，提高数据库读写性能。</p></li>
+<li><p>SQL Server 数据库同时还可以通过ALTER DATABASE [USERDB] SET DELAYED_DURABILITY=FORCED的方式开启 Delayed Durability 选项，通过开启该选项可以降低对数据库的 IOPS。</p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="id5">
+<h3>步骤三：生产端开启 Exactly-Once 投递语义<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h3>
+<p>在生产端，您仅需要在创建 Producer 时，将PropertyKeyConst.EXACTLYONCE_DELIVERY属性设置为 true，即可打开 Exactly-Once 投递语义，示例代码如下所示。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* TestExactlyOnceProducer 启动</span>
+<span class="cm">* 通过 PropertyKeyConst.EXACTLYONCE_DELIVERY 开启 exactly-once 投递语义</span>
+<span class="cm">*/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestExactlyOnceProducer</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Properties</span> <span class="n">producerProperties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+        <span class="n">producerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;{GROUP_ID}&quot;</span><span class="o">);</span>
+        <span class="n">producerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">AccessKey</span><span class="o">,</span> <span class="s">&quot;{accessKey}&quot;</span><span class="o">);</span>
+        <span class="n">producerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">SecretKey</span><span class="o">,</span> <span class="s">&quot;{secretKey}&quot;</span><span class="o">);</span>
+        <span class="n">producerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">NAMESRV_ADDR</span><span class="o">,</span> <span class="s">&quot;{NAMESRV_ADDR}&quot;</span><span class="o">);</span>
+        <span class="n">producerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">EXACTLYONCE_DELIVERY</span><span class="o">,</span> <span class="s">&quot;true&quot;</span><span class="o">);</span>
+        <span class="n">Producer</span> <span class="n">producer</span> <span class="o">=</span> <span class="n">ExactlyOnceONSFactory</span><span class="o">.</span><span class="na">createProducer</span><span class="o">(</span><span class="n">producerProperties</span><span class="o">);</span>
+        <span class="n">producer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Producer Started&quot;</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">Message</span> <span class="n">message</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Message</span><span class="o">(</span><span class="s">&quot;{topic}&quot;</span><span class="o">,</span> <span class="s">&quot;{tag}&quot;</span><span class="o">,</span> <span class="s">&quot;mq send transaction message test&quot;</span><span class="o">.</span><span class="na">getBytes</span><span class="o">());</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">SendResult</span> <span class="n">sendResult</span> <span class="o">=</span> <span class="n">producer</span><span class="o">.</span><span class="na">send</span><span class="o">(</span><span class="n">message</span><span class="o">);</span>
+                <span class="k">assert</span> <span class="n">sendResult</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">new</span> <span class="n">Date</span><span class="o">()</span> <span class="o">+</span> <span class="s">&quot; Send mq message success! msgId is: &quot;</span> <span class="o">+</span> <span class="n">sendResult</span><span class="o">.</span><span class="na">getMessageId</span><span class="o">());</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">ONSClientException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;发送失败&quot;</span><span class="o">);</span>
+                <span class="c1">//出现异常意味着发送失败，为避免消息丢失，建议缓存该消息然后进行重试。</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="n">producer</span><span class="o">.</span><span class="na">shutdown</span><span class="o">();</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id6">
+<h3>步骤四：消费端开启 Exactly-Once 投递语义<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h3>
+<p>使用消息队列 RocketMQ 的 Exactly-Once 投递语义进行消费时，消费端需要使用 ExactlyOnceONSFactory 调用createExactlyOnceConsumer 接口创建 ExactlyOnceConsumer，然后通过使用 ExactlyOnceConsumer 进行 Exactly-Once 模式的消费。</p>
+<p>在使用 ExactlyOnceConsumer 时，需要注意以下两点：</p>
+<p>创建 ExactlyOnceConsumer 时，可以通过设置 PropertyKeyConst.EXACTLYONCE_DELIVERY 属性打开或者关闭 Exactly-Once 投递语义。ExactlyOnceConsumer 默认打开 Exactly-Once 投递语义。</p>
+<p>使用 ExactlyOnceConsumer 消费时，在消息监听器 MessageListener 的 consume 方法中，您的业务处理逻辑需要使用 MQDataSource 对数据库的进行读写操作。</p>
+<p>您可以选择以下任一方式在消费端开启 Exactly-Once 投递语义：</p>
+<p>以非 Spring 方式开启 Exactly-Once 投递语义</p>
+<p>MessageListener 中以事务方式实现多项数据库操作和消息消费的事务性</p>
+<p>MessageListener 中通过 Springboot 注解方式实现开启 Exactly-Once 投递语义</p>
+<p>MessageListener 中通过 MyBatis 方式实现 Exactly-Once 投递语义</p>
+<p>以非 Spring 方式开启 Exactly-Once 投递语义
+示例如下所示。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* ExactlyOnceConsumer 启动</span>
+<span class="cm">* 通过 PropertyKeyConst.EXACTLYONCE_DELIVERY 开启 Exactly-Once 投递语义</span>
+<span class="cm">*/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestExactlyOnceConsumer</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">ExactlyOnceConsumer</span> <span class="n">consumer</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">TxMessageListener</span> <span class="n">listener</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">TestExactlyOnceConsumer</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Properties</span> <span class="n">consumerProperties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+        <span class="n">consumerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;{GID}&quot;</span><span class="o">);</span>
+        <span class="n">consumerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">AccessKey</span><span class="o">,</span> <span class="s">&quot;{accessKey}&quot;</span><span class="o">);</span>
+        <span class="n">consumerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">SecretKey</span><span class="o">,</span> <span class="s">&quot;{secretKey}&quot;</span><span class="o">);</span>
+        <span class="n">consumerProperties</span><span class="o">.</span><span class="na">setProperty</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">NAMESRV_ADDR</span><span class="o">,</span> <span class="s">&quot;{NAMESRV_ADDR}&quot;</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">consumer</span> <span class="o">=</span> <span class="n">ExactlyOnceONSFactory</span><span class="o">.</span><span class="na">createExactlyOnceConsumer</span><span class="o">(</span><span class="n">consumerProperties</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;{topic}&quot;</span><span class="o">,</span> <span class="s">&quot;&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">TestExactlyOnceListener</span><span class="o">());</span>
+        <span class="n">consumer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Consumer start success.&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+<span class="cm">/**</span>
+<span class="cm">* SimpleListener 为使用 ExactlyOnceConsumer 消费的简单示例</span>
+<span class="cm">* 实现了一个简单的消息记录到数据库的过程，保证每条消息持久化到数据库有且仅有一次生效</span>
+<span class="cm">*/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleListener</span> <span class="kd">implements</span> <span class="n">MessageListener</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">MQDataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">SimpleListener</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MQDataSource</span><span class="o">(</span><span class="s">&quot;{url}&quot;</span><span class="o">,</span> <span class="s">&quot;{user}&quot;</span><span class="o">,</span> <span class="s">&quot;{passwd}&quot;</span><span class="o">,</span> <span class="s">&quot;{driver}&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">PreparedStatement</span> <span class="n">statement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="cm">/**</span>
+<span class="cm">            * 在此处对消费到的消息 message 做业务计算处理，使用 MQDataSource 将处理结果持久化到数据库系统。</span>
+<span class="cm">            * 此示例演示了消费并记录消息到数据库系统的场景，实际的业务处理按照：接收消息-&gt;业务处理-&gt;结果持久化的过程,</span>
+<span class="cm">            * Exactly-Once 投递语义保证消息处理的持久化过程有且仅有一次。</span>
+<span class="cm">            */</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+            <span class="n">statement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">prepareStatement</span><span class="o">(</span><span class="s">&quot;INSERT INTO app(msg, ctime) VALUES(?, ?&quot;</span><span class="o">);</span>
+            <span class="n">statement</span><span class="o">.</span><span class="na">setString</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getBody</span><span class="o">()));</span>
+            <span class="n">statement</span><span class="o">.</span><span class="na">setLong</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
+            <span class="n">statement</span><span class="o">.</span><span class="na">execute</span><span class="o">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;consume message success&quot;</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;consume message fail:&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">ReconsumeLater</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">statement</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">statement</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">connection</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>MessageListener 中以事务方式实现多项数据库操作和消息消费的事务性
+示例如下所示。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* TestExactlyOnceListener 实现</span>
+<span class="cm">* 实现了一个事务中对多个业务表进行更新的场景，保证事务内的操作有且仅有一次生效</span>
+<span class="cm">*/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">SimpleTxListener</span> <span class="kd">implements</span> <span class="n">MessageListener</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="n">MQDataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="kd">public</span> <span class="nf">SimpleTxListener</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataSource</span> <span class="o">=</span> <span class="k">new</span> <span class="n">MQDataSource</span><span class="o">(</span><span class="s">&quot;{url}&quot;</span><span class="o">,</span> <span class="s">&quot;{user}&quot;</span><span class="o">,</span> <span class="s">&quot;{passwd}&quot;</span><span class="o">,</span> <span class="s">&quot;{driver}&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+        <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">Statement</span> <span class="n">statement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="cm">/**</span>
+<span class="cm">            *  在此处对消费到的消息 message 做业务计算处理，使用 MQDataSource 将处理结果持久化到数据库系统。</span>
+<span class="cm">            *  此范例演示了在一个事务内对多个表进行更新的业务场景，Exactly-Once 投递语义保证事务内的操作有且仅有一次。</span>
+<span class="cm">            *  实际的业务处理按照:接收消息-&gt;业务处理-&gt;结果持久化的流程来设计</span>
+<span class="cm">            */</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+            <span class="n">connection</span><span class="o">.</span><span class="na">setAutoCommit</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+            <span class="n">String</span> <span class="n">insertSql</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;INSERT INTO app(msg, message_id, ctime) VALUES(\&quot;%s\&quot;, \&quot;%s\&quot;, %d)&quot;</span><span class="o">,</span>
+                <span class="k">new</span> <span class="n">String</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getBody</span><span class="o">()),</span> <span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">(),</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
+            <span class="n">String</span> <span class="n">updateSql</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">&quot;UPDATE consume_count SET cnt = count + 1 WHERE consumer_group = \&quot;%s\&quot;&quot;</span><span class="o">,</span> <span class="s">&quot;GID_TEST&quot;</span><span class="o">);</span>
+            <span class="n">statement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createStatement</span><span class="o">();</span>
+            <span class="n">statement</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">insertSql</span><span class="o">);</span>
+            <span class="n">statement</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">updateSql</span><span class="o">);</span>
+            <span class="n">connection</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;consume message :&quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">connection</span><span class="o">.</span><span class="na">rollback</span><span class="o">();</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="o">}</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;consume message fail&quot;</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">ReconsumeLater</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">statement</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">statement</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">connection</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>MessageListener 中通过 Springboot 注解方式实现开启 Exactly-Once 投递语义
+1.创建 MessageListener，如下所示。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="cm">/**</span>
+<span class="cm">* MessageListener 通过注解方式开启 Exactly-Once</span>
+<span class="cm">* 只需在 MessageListener 的 consume 方法加上 @MQTransaction 即可开启</span>
+<span class="cm">* 适用于 springboot 微服务中使用</span>
+<span class="cm">*/</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestMessageListener</span> <span class="kd">implements</span> <span class="n">MessageListener</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">INSERTSQLFORMAT</span> <span class="o">=</span> <span class="s">&quot;INSERT INTO app(message_id, ctime) VALUES(\&quot;%s\&quot;, %d)&quot;</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="n">MQDataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="nd">@Override</span>
+    <span class="nd">@MQTransaction</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Connection</span> <span class="n">connection</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">Statement</span> <span class="n">statement</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">insertSql</span> <span class="o">=</span> <span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="n">INSERTSQLFORMAT</span><span class="o">,</span> <span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">(),</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">());</span>
+            <span class="n">connection</span> <span class="o">=</span> <span class="k">this</span><span class="o">.</span><span class="na">dataSource</span><span class="o">.</span><span class="na">getConnection</span><span class="o">();</span>
+            <span class="n">statement</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="na">createStatement</span><span class="o">();</span>
+            <span class="n">statement</span><span class="o">.</span><span class="na">execute</span><span class="o">(</span><span class="n">insertSql</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Throwable</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">ReconsumeLater</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">statement</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">statement</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span><span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+            <span class="o">}</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">connection</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                    <span class="n">connection</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span> <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setDataSource</span><span class="o">(</span><span class="n">MQDataSource</span> <span class="n">dataSource</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">dataSource</span> <span class="o">=</span> <span class="n">dataSource</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>2.在 consumer.xml 中定义消费者 Bean 等信息。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+    &lt;bean id=&quot;mqDataSource&quot; class=&quot;com.aliyun.openservices.ons.api.impl.rocketmq.exactlyonce.datasource.MQDataSource&quot; init-method=&quot;init&quot; destroy-method=&quot;close&quot;&gt;
+        &lt;property name=&quot;url&quot; value=&quot;{url}&quot; /&gt;
+        &lt;property name=&quot;username&quot; value=&quot;{user}&quot; /&gt;
+        &lt;property name=&quot;password&quot; value=&quot;{passwd}&quot; /&gt;
+        &lt;property name=&quot;driverClass&quot; value=&quot;{driver}&quot; /&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;msgListener&quot; class=&quot;com.aliyun.openservices.ons.api.impl.rocketmq.exactlyonce.spring.TestMessageListener&quot;&gt;
+        &lt;property name=&quot;dataSource&quot; ref=&quot;mqDataSource&quot;&gt; &lt;!--消费者配置信息--&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt; &lt;!--Listener 配置--&gt;
+    &lt;!-- 多 GID 订阅同一个 Topic，可以创建多个 ConsumerBean--&gt;
+    &lt;bean id=&quot;consumer&quot; class=&quot;com.aliyun.openservices.ons.api.bean.ExactlyOnceConsumerBean&quot; init-method=&quot;start&quot; destroy-method=&quot;shutdown&quot;&gt;
+        &lt;property name=&quot;properties&quot; &gt; &lt;!--消费者配置信息--&gt;
+            &lt;props&gt;
+                &lt;prop key=&quot;GROUP_ID&quot;&gt;{gid}&lt;/prop&gt;
+                &lt;prop key=&quot;AccessKey&quot;&gt;{accessKey}&lt;/prop&gt;
+                &lt;prop key=&quot;SecretKey&quot;&gt;{secretKey}&lt;/prop&gt;
+                &lt;!--将消费者线程数固定为 50 个
+                &lt;prop key=&quot;ConsumeThreadNums&quot;&gt;50&lt;/prop&gt;
+                --&gt;
+            &lt;/props&gt;
+        &lt;/property&gt;
+        &lt;property name=&quot;subscriptionTable&quot;&gt;
+            &lt;map&gt;
+                &lt;entry value-ref=&quot;msgListener&quot;&gt;
+                    &lt;key&gt;
+                        &lt;bean class=&quot;com.aliyun.openservices.ons.api.bean.Subscription&quot;&gt;
+                            &lt;property name=&quot;topic&quot; value=&quot;{topic}&quot;/&gt;
+                            &lt;property name=&quot;expression&quot; value=&quot;{subExpression}&quot;/&gt;&lt;!--expression 即 Tag，可以设置成具体的 Tag，如 taga||tagb||tagc，也可设置成*。 *仅代表订阅所有 Tag，不支持通配--&gt;
+                        &lt;/bean&gt;
+                    &lt;/key&gt;
+                &lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</pre></div>
+</div>
+<p>3.运行已经与 Spring 集成好的消费者，如下所示。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ConsumeWithSpring</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="cm">/**</span>
+<span class="cm">        * 消费者 Bean 配置在 consumer.xml 中，可通过 ApplicationContext 获取或者直接注入到其他类（比如具体的 Controller）中</span>
+<span class="cm">        */</span>
+        <span class="n">ApplicationContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ClassPathXmlApplicationContext</span><span class="o">(</span><span class="s">&quot;consumer.xml&quot;</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Consumer Started&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+</pre></div>
+</div>
+<p>MessageListener 中通过 MyBatis 方式实现 Exactly-Once 投递语义
+1.设计业务数据库写入操作 DAO。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">com.aliyun.openservices.tcp.example.mybatis</span><span class="o">;</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">AppDAO</span> <span class="o">{</span>
+    <span class="n">Integer</span> <span class="nf">insertMessage</span><span class="o">(</span><span class="n">String</span> <span class="n">msgId</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>2.在 mapper.xml 文件中编写插入操作 sql 语句。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+        PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+        &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+    &lt;mapper namespace=&quot;com.aliyun.openservices.tcp.example.mybatis.AppDAO&quot;&gt;
+        &lt;insert id=&quot;insertMessage&quot;&gt;
+            INSERT INTO app (message_id, ctime) VALUES (#{msgId}, now())
+        &lt;/insert&gt;
+    &lt;/mapper&gt;
+</pre></div>
+</div>
+<p>3.利用 MQDataSource 实现自定义的 DataSourceFactory。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MQDataSourceFactoty</span> <span class="kd">extends</span> <span class="n">DruidDataSourceFactory</span> <span class="kd">implements</span> <span class="n">DataSourceFactory</span> <span class="o">{</span>
+    <span class="kd">protected</span> <span class="n">Properties</span> <span class="n">properties</span><span class="o">;</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setProperties</span><span class="o">(</span><span class="n">Properties</span> <span class="n">properties</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">properties</span> <span class="o">=</span> <span class="n">properties</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">DataSource</span> <span class="nf">getDataSource</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">DruidDataSource</span> <span class="n">druidDataSource</span> <span class="o">=</span> <span class="o">(</span><span class="n">DruidDataSource</span><span class="o">)</span> <span class="n">createDataSource</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">properties</span><span class="o">);</span>
+            <span class="k">return</span> <span class="k">new</span> <span class="n">MQDataSource</span><span class="o">(</span><span class="n">druidDataSource</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;err:&quot;</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+<p>4.在 mybatis-config.xml 中注册 datasource 为 MQDataSourceFactoty 类型。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">configuration</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">environments</span> <span class="k">default</span><span class="o">=</span><span class="s">&quot;development&quot;</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">environment</span> <span class="n">id</span><span class="o">=</span><span class="s">&quot;development&quot;</span><span class="o">&gt;</span>
+            <span class="o">&lt;</span><span class="n">transactionManager</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;JDBC&quot;</span><span class="o">/&gt;</span>
+            <span class="o">&lt;!--</span> <span class="n">配置数据库连接信息</span> <span class="o">--&gt;</span>
+            <span class="o">&lt;</span><span class="n">dataSource</span> <span class="n">type</span><span class="o">=</span><span class="s">&quot;com.aliyun.openservices.tcp.example.mybatis.MQDataSourceFactoty&quot;</span><span class="o">&gt;</span>
+                <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;driverClass&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;com.mysql.jdbc.Driver&quot;</span><span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;url&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;{url}&quot;</span><span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;username&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;{username}&quot;</span><span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;{password}&quot;</span><span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;initialSize&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;10&quot;</span> <span class="o">/&gt;</span>
+                <span class="o">&lt;</span><span class="n">property</span> <span class="n">name</span><span class="o">=</span><span class="s">&quot;maxActive&quot;</span> <span class="n">value</span><span class="o">=</span><span class="s">&quot;20&quot;</span><span class="o">/&gt;</span>
+            <span class="o">&lt;/</span><span class="n">dataSource</span><span class="o">&gt;</span>
+        <span class="o">&lt;/</span><span class="n">environment</span><span class="o">&gt;</span>
+    <span class="o">&lt;/</span><span class="n">environments</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="n">mappers</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="n">mapper</span> <span class="n">resource</span><span class="o">=</span><span class="s">&quot;mapper.xml&quot;</span><span class="o">/&gt;</span>
+    <span class="o">&lt;/</span><span class="n">mappers</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">configuration</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>5.在监听器中使用 Mytatis 的方式访问数据库，实现 Exactly-Once 的消费方式。</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">class</span> <span class="nc">TestMybatisListener</span> <span class="kd">implements</span> <span class="n">MessageListener</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">SqlSessionFactory</span> <span class="n">sqlSessionFactory</span><span class="o">;</span>
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">resource</span> <span class="o">=</span> <span class="s">&quot;mybatis-config.xml&quot;</span><span class="o">;</span>
+        <span class="n">Reader</span> <span class="n">reader</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">reader</span><span class="o">=</span> <span class="n">Resources</span><span class="o">.</span><span class="na">getResourceAsReader</span><span class="o">(</span><span class="n">resource</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">IOException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">sqlSessionFactory</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SqlSessionFactoryBuilder</span><span class="o">().</span><span class="na">build</span><span class="o">(</span><span class="n">reader</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">long</span> <span class="n">begion</span> <span class="o">=</span> <span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">();</span>
+          <span class="n">SqlSession</span> <span class="n">sqlSession</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">try</span> <span class="o">{</span>
+            <span class="n">sqlSession</span> <span class="o">=</span> <span class="n">sqlSessionFactory</span><span class="o">.</span><span class="na">openSession</span><span class="o">();</span>
+            <span class="n">AppDAO</span> <span class="n">appDAO</span> <span class="o">=</span> <span class="n">sqlSession</span><span class="o">.</span><span class="na">getMapper</span><span class="o">(</span><span class="n">AppDAO</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+            <span class="n">appDAO</span><span class="o">.</span><span class="na">insertMessage</span><span class="o">(</span><span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;consume : &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">.</span><span class="na">getMsgID</span><span class="o">());</span>
+            <span class="n">sqlSession</span><span class="o">.</span><span class="na">commit</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">e</span><span class="o">.</span><span class="na">printStackTrace</span><span class="o">();</span>
+              <span class="n">sqlSession</span><span class="o">.</span><span class="na">rollback</span><span class="o">();</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">ReconsumeLater</span><span class="o">;</span>
+        <span class="o">}</span> <span class="k">finally</span> <span class="o">{</span>
+            <span class="n">sqlSession</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="id7">
+<h2>注意事项<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
+<p>在使用消息队列 RocketMQ 的 ExactlyOnceConsumer 进行消息消费的过程中，请注意以下两点：</p>
+<p>不可在控制台使用人工的方式重置消费位点。若您主动重置位点到一个已经消费过的位点，则会失去 Exactly-Once 的投递语义。</p>
+<p>每次数据库的 INSERT 或 UPDATE 操作会带来一次额外的更新操作，同时消息队列 RocketMQ 的 ExactlyOnceConsumer 也会有定时的查询或删除操作，会对数据库的 IOPS 带来一定增长。</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../c.html" class="btn btn-neutral float-right" title="C/C++ SDK" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Java SDK" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, BandCap
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

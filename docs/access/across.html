@@ -88,7 +88,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../sdk/index.html">SDK 参考</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">访问控制（权限管理）</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="ram.html">RAM 主子账号授权</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">跨云账号授权</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">跨云账号授权</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id2">应用场景</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">操作步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">后续步骤</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">更多信息</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="policy.html">权限策略</a></li>
 </ul>
 </li>
@@ -167,20 +173,18 @@
             
   <div class="section" id="id1">
 <h1>跨云账号授权<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
-<p>本页目录
-应用场景
-操作步骤
-后续步骤
-更多信息
-使用企业 A 的阿里云账号（主账号）创建 RAM 角色并为该角色授权，并将该角色赋予企业 B，即可实现使用企业 B 的主账号或其 RAM 用户（子账号）访问企业 A 的阿里云资源的目的。</p>
-<p>应用场景
-企业 A 购买了消息队列 RocketMQ 服务来开展业务，并希望将部分业务授权给企业 B。</p>
+<p>使用企业 A 的阿里云账号（主账号）创建 RAM 角色并为该角色授权，并将该角色赋予企业 B，即可实现使用企业 B 的主账号或其 RAM 用户（子账号）访问企业 A 的阿里云资源的目的。</p>
+<div class="section" id="id2">
+<h2>应用场景<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
+<p>企业 A 购买了消息队列 RocketMQ 服务来开展业务，并希望将部分业务授权给企业 B。</p>
 <p>需求说明：</p>
 <p>A 希望能专注于业务系统，仅作为资源 Owner；而消息发布和订阅等任务委托或授权给企业 B。</p>
 <p>企业 A 希望当企业 B 的员工加入或离职时，无需做任何权限变更。企业 B 可以进一步将 A 的资源访问权限分配给 B 的 RAM 用户（员工或应用），并可以精细控制其员工或应用对资源的访问和操作权限。</p>
 <p>企业 A 希望如果双方合同终止，企业 A 随时可以撤销对企业 B 的授权。</p>
-<p>操作步骤
-首先需要使用企业 A 的阿里云账号（主账号）登录 RAM 控制台并为企业 B 的云账号创建 RAM 角色。</p>
+</div>
+<div class="section" id="id3">
+<h2>操作步骤<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<p>首先需要使用企业 A 的阿里云账号（主账号）登录 RAM 控制台并为企业 B 的云账号创建 RAM 角色。</p>
 <p>具体步骤参见创建可信实体为阿里云账号的 RAM 角色。</p>
 <p>（可选）企业 A 为刚创建的 RAM 角色创建自定义策略。</p>
 <p>具体步骤参见创建自定义策略。</p>
@@ -194,8 +198,10 @@
 <p>企业 B 必须为其主账号下的 RAM 用户添加 AliyunSTSAssumeRoleAccess 权限，RAM 用户才能扮演企业 A 创建的 RAM 角色。</p>
 <p>企业 B 的 RAM 用户通过控制台或 API 访问企业 A 的资源。</p>
 <p>具体步骤参见后续步骤。</p>
-<p>后续步骤
-完成上述操作后，企业 B 的 RAM 用户即可按照以下步骤登录控制台访问企业 A 的云资源或调用 API。</p>
+</div>
+<div class="section" id="id4">
+<h2>后续步骤<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
+<p>完成上述操作后，企业 B 的 RAM 用户即可按照以下步骤登录控制台访问企业 A 的云资源或调用 API。</p>
 <p>登录控制台访问企业 A 的云资源</p>
 <p>在浏览器中打开 RAM 用户登录入口 <a class="reference external" href="https://signin.aliyun.com/login.htm">https://signin.aliyun.com/login.htm</a>。</p>
 <p>在 RAM 用户登录页面上，输入 RAM 用户登录名称，单击下一步，并输入 RAM 用户密码，然后单击登录。</p>
@@ -208,23 +214,28 @@
 <p>STS 在消息队列 RocketMQ 中的使用
 注意：STS 功能只在消息队列 RocketMQ 的 Java SDK 1.7.8.Final 版本及以上支持。</p>
 <p>使用消息队列 RocketMQ 的 SDK 收发消息时，您只需将获取到的 AccessKey 和 Token 填入到以下属性中即可：</p>
-<blockquote>
-<div><p>// STS 的 AccessKeyId
-properties.put(PropertyKeyConst.AccessKey,”XXX”);
-// STS 的 AccessKeySecret
-properties.put(PropertyKeyConst.SecretKey, “XXX”);
-// STS 的 SecurityToken
-properties.put(PropertyKeyConst.SecurityToken, “XXX”);
-……</p>
-</div></blockquote>
-<p>更多信息
-RAM 主子账号授权</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="n">new</span> <span class="n">Properties</span><span class="p">();</span>
+<span class="o">......</span>
+<span class="o">//</span> <span class="n">STS</span> <span class="n">的</span> <span class="n">AccessKeyId</span>
+<span class="n">properties</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="n">AccessKey</span><span class="p">,</span><span class="s2">&quot;XXX&quot;</span><span class="p">);</span>
+<span class="o">//</span> <span class="n">STS</span> <span class="n">的</span> <span class="n">AccessKeySecret</span>
+<span class="n">properties</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="n">SecretKey</span><span class="p">,</span> <span class="s2">&quot;XXX&quot;</span><span class="p">);</span>
+<span class="o">//</span> <span class="n">STS</span> <span class="n">的</span> <span class="n">SecurityToken</span>
+<span class="n">properties</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="n">SecurityToken</span><span class="p">,</span> <span class="s2">&quot;XXX&quot;</span><span class="p">);</span>
+<span class="o">......</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="id5">
+<h2>更多信息<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
+<p>RAM 主子账号授权</p>
 <p>权限策略概述</p>
 <p>什么是 RAM</p>
 <p>基本概念</p>
 <p>创建自定义策略</p>
 <p>创建 RAM 用户</p>
 <p>为 RAM 用户授权</p>
+</div>
 </div>
 
 

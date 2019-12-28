@@ -36,7 +36,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="搜索" href="../search.html" />
-    <link rel="next" title="计费相关" href="charging.html" />
+    <link rel="next" title="收到订阅关系不一致告警后怎么办？" href="relationship-inconsistency.html" />
     <link rel="prev" title="常见问题" href="index.html" /> 
 </head>
 
@@ -100,6 +100,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#id7">消息堆积</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="relationship-inconsistency.html">收到订阅关系不一致告警后怎么办？</a></li>
 <li class="toctree-l2"><a class="reference internal" href="charging.html">计费相关</a></li>
 <li class="toctree-l2"><a class="reference internal" href="load-balancing.html">消息负载均衡策略</a></li>
 <li class="toctree-l2"><a class="reference internal" href="bugs.html">故障处理</a></li>
@@ -179,57 +180,266 @@
 <h1>常见问题<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
 <div class="section" id="id2">
 <h2>快速开始<a class="headerlink" href="#id2" title="永久链接至标题">¶</a></h2>
-<ul class="simple">
-<li><p>消息队列 RocketMQ 是否可以在公网访问？</p></li>
-<li><p>新创建的 Group ID 从哪里开始消费？</p></li>
-<li><p>消息队列 RocketMQ 消费失败如何重新消费消息？</p></li>
-<li><p>消息发送了，但是没有收到怎么办？</p></li>
-<li><p>消息队列 RocketMQ 是否能保证消息不重复？</p></li>
-<li><p>控制台显示的消息堆积量是否包含了 Topic 下所有 Tag 的消息？</p></li>
+<dl>
+<dt>… 消息队列 RocketMQ 是否可以在公网访问？</dt><dd><p>支持，消息队列 RocketMQ 专门开辟了公网专用集群供测试使用。
+在消息队列 RocketMQ 的控制台创建 Topic 时，Region 请选择“公网”。
+此 Topic 即可通过公网访问，但公网的网络环境复杂，相对没有内网更稳定。</p>
+<p>当正式投入生产时，务必使用可用性更高的生产环境 Region，部署在阿里云 ECS 上进行收发消息。</p>
+</dd>
+<dt>… 新创建的 Group ID 从哪里开始消费？</dt><dd><ul class="simple">
+<li><p>如果这个 Group ID 是第一次启动，则会忽略启动之前发送的消息，也就是忽略历史消息，从启动之后发送的消息开始消费。</p></li>
+<li><p>如果这个 Group ID 是第二次启动，那么从上次消费的位置开始消费。</p></li>
+<li><p>如果想从特定位置开始消费，可以通过消息队列 RocketMQ 控制台的消费位点重置功能，
+指定到具体的时间开始消费。每次重置只针对特定 Group ID 下的特定 Topic，不会影响其他 Group ID。</p></li>
 </ul>
+</dd>
+<dt>… 消息队列 RocketMQ 消费失败如何重新消费消息？</dt><dd><p><strong>集群消费方式</strong></p>
+<p>消费业务逻辑代码如果返回 Action.ReconsumerLater，或者 NULL，或者抛出异常，消息都会走重试流程，至多重试 16 次，如果重试 16 次后，仍然失败，则消息丢弃。每次重试的间隔时间如下：</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 40%" />
+<col style="width: 60%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>第几次重试</p></th>
+<th class="head"><p>每次重试间隔时间</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>10 秒</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>30 秒</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>1 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>2 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>3 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>4 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>7</p></td>
+<td><p>5 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>8</p></td>
+<td><p>6 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>9</p></td>
+<td><p>7 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>10</p></td>
+<td><p>8 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>11</p></td>
+<td><p>9 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>12</p></td>
+<td><p>10 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>13</p></td>
+<td><p>20 分钟</p></td>
+</tr>
+<tr class="row-odd"><td><p>14</p></td>
+<td><p>30 分钟</p></td>
+</tr>
+<tr class="row-even"><td><p>15</p></td>
+<td><p>1 小时</p></td>
+</tr>
+<tr class="row-odd"><td><p>16</p></td>
+<td><p>2 小时</p></td>
+</tr>
+</tbody>
+</table>
+<p>可以通过调用 message.getReconsumeTimes() 方法来获取消息的重试次数。</p>
+<p><strong>广播消费方式</strong></p>
+<p>广播消费方式仍然能保证一条消息至少被消费一次，但消费失败后不做重试操作。</p>
+</dd>
+<dt>… 消息发送了，但是没有收到怎么办？</dt><dd><p>消息队列 RocketMQ 提供了多种消息查询方式：</p>
+<ol class="arabic simple">
+<li><p>使用 Topic 按时间范围进行查询，可以查询到一段时间内某 Topic 收到的所有消息。</p></li>
+<li><p>使用 Topic 和 Message ID 对消息进行精准查询。</p></li>
+<li><p>使用 Topic 和 Message Key 较为精准地查询具有相同 Message Key 的一类消息。</p></li>
+</ol>
+<p>上述方式可以查询到消息的具体内容以及消费情况，
+如果需要追踪一条消息从生产者发出到被消费者消费的整个链路中各个相关节点的时间地点，
+可以使用消息队列 RocketMQ 最新的消息轨迹查询功能，具体使用方式请参考消息轨迹使用指南。</p>
+</dd>
+<dt>… 消息队列 RocketMQ 是否能保证消息不重复？</dt><dd><p>绝大多数情况下，消息是不重复的。作为一款分布式消息中间件，在网络抖动、应用处理超时等异常情况下，无法保证消息不重复，但是能保证消息不丢失。</p>
+</dd>
+<dt>… 控制台显示的消息堆积量是否包含了 Topic 下所有 Tag 的消息？</dt><dd><p>是。消息生产者将所有类型的 Tag 都发送至同一个 Topic 中，消息按照先后顺序在队列中排列，
+并维护一个消息写入位点；Group ID 启动时会指明需要订阅的 Tag，并从服务端获取当前的消费位点；
+服务端从当前 Group ID 的消费位点开始遍历队列中的消息，
+判断如果消息的 Tag 符合 Group ID 订阅的 Tag 即投递给 Group ID，不符合则跳过该消息。</p>
+<p>如下图所示，Group ID 消费位点往前移动，Tag2、Tag3 的消息会在服务端被过滤掉，
+Tag1 的消息为 Group ID 所需要的，会投递给 Group ID。</p>
+<div class="figure align-default">
+<img alt="tag-accumulation" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/105329/cn_zh/1548241011239/FAQ-tag.png" />
+</div>
+<p>因此您在控制台的 <strong>消费者状态 &gt; 消息堆积总量</strong> 看到的是未被过滤的堆积总量，包含了所有 Tag 的消息量。</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="id3">
 <h2>配置相关<a class="headerlink" href="#id3" title="永久链接至标题">¶</a></h2>
+<dl>
+<dt>… 消息队列 RocketMQ 消息在服务器保存多长时间？</dt><dd><p>存储的消息最多保存 3 天，超过 3 天未消费的消息会被删除。建议配置监控报警实时监控消费进度，并根据报警信息人工介入处理。</p>
+</dd>
+<dt>… 消息队列 RocketMQ 消息 Body 的长度限制是多少？</dt><dd><p>消息大小根据消息类型来限制。具体限制如下所述：</p>
 <ul class="simple">
-<li><p>消息队列 RocketMQ 消息在服务器保存多长时间？</p></li>
-<li><p>消息队列 RocketMQ 消息 Body 的长度限制是多少？</p></li>
-<li><p>消息队列 RocketMQ 客户端如何设置消费线程数？</p></li>
-<li><p>由于.NET 客户端的配置问题，导致 dll 加载失败或者其他运行错误时如何处理？</p></li>
+<li><p>普通消息和顺序消息：4 MB</p></li>
+<li><p>事务消息和定时/延时消息：64 KB</p></li>
 </ul>
+</dd>
+<dt>… 消息队列 RocketMQ 客户端如何设置消费线程数？</dt><dd><p>在启动 Consumer 时，设置一个 ConsumeThreadNums 属性即可。具体示例如下所示：</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+    <span class="n">Properties</span> <span class="n">properties</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Properties</span><span class="o">();</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">GROUP_ID</span><span class="o">,</span> <span class="s">&quot;GID_001&quot;</span><span class="o">);</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">AccessKey</span><span class="o">,</span> <span class="s">&quot;xxxxxxxxxxxx&quot;</span><span class="o">);</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">SecretKey</span><span class="o">,</span> <span class="s">&quot;xxxxxxxxxxxx&quot;</span><span class="o">);</span>
+    <span class="cm">/**</span>
+<span class="cm">    * 设置消费端线程数固定为 20</span>
+<span class="cm">    */</span>
+    <span class="n">properties</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">PropertyKeyConst</span><span class="o">.</span><span class="na">ConsumeThreadNums</span><span class="o">,</span><span class="mi">20</span><span class="o">);</span>
+    <span class="n">Consumer</span> <span class="n">consumer</span> <span class="o">=</span><span class="n">ONSFactory</span><span class="o">.</span><span class="na">createConsumer</span><span class="o">(</span><span class="n">properties</span><span class="o">);</span>
+    <span class="n">consumer</span><span class="o">.</span><span class="na">subscribe</span><span class="o">(</span><span class="s">&quot;TestTopic&quot;</span><span class="o">,</span> <span class="s">&quot;*&quot;</span><span class="o">,</span> <span class="k">new</span> <span class="n">MessageListener</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kd">public</span> <span class="n">Action</span> <span class="nf">consume</span><span class="o">(</span><span class="n">Message</span> <span class="n">message</span><span class="o">,</span> <span class="n">ConsumeContext</span> <span class="n">context</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Receive: &quot;</span> <span class="o">+</span> <span class="n">message</span><span class="o">);</span>
+            <span class="k">return</span> <span class="n">Action</span><span class="o">.</span><span class="na">CommitMessage</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">});</span>
+    <span class="n">consumer</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;Consumer Started&quot;</span><span class="o">);</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</dd>
+<dt>… 由于.NET 客户端的配置问题，导致 dll 加载失败或者其他运行错误时如何处理？</dt><dd><p>请参考.NET SDK 压缩包中的文档：SDK_GUIDE.pdf，确认工程配置与文档说明一致。</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="id4">
 <h2>消息轨迹<a class="headerlink" href="#id4" title="永久链接至标题">¶</a></h2>
-<ul class="simple">
-<li><p>为什么查询不到轨迹数据？</p></li>
-<li><p>确定已经消费了消息，但轨迹却显示没有消费，而且客户端 IP 和 Producer ID 不符合实际情况？</p></li>
-<li><p>消费者列表中为什么没有我的 Group ID？</p></li>
-<li><p>之前的查询任务怎么看不到了？</p></li>
-</ul>
+<dl class="simple">
+<dt>… 为什么查询不到轨迹数据？</dt><dd><p>当输入查询条件查不到轨迹数据时，请参考是否属于以下无法查询情况。</p>
+<ol class="arabic simple">
+<li><p>消息轨迹目前支持 Java 客户端（版本至少为 1.2.2）。</p></li>
+<li><p>查询条件是否正确，如 Topic、Message ID、Message Key 是否输入正确。</p></li>
+<li><p>查询时间区间是否正确，为了提高查询速度，需要您输入消息的发送时间范围。如果查询不到，请尝试扩大时间范围重试。</p></li>
+<li><p>如果确认上述情况无误还是无法查询到结果，请提交工单获得技术支持，并附带上日志文件，日志文件位于/home/{user}/logs/ons.log。</p></li>
+</ol>
+</dd>
+<dt>… 确定已经消费了消息，但轨迹却显示没有消费，而且客户端 IP 和 Producer ID 不符合实际情况？</dt><dd><p>出现该现象是由于客户端本身并没有升级到支持轨迹功能的版本，
+因此消息队列 RocketMQ 轨迹查询后端仅仅能够拿到部分不完整的轨迹数据，
+展现结果不正常。建议尽快升级客户端，详情请参考消息轨迹使用指南。</p>
+</dd>
+<dt>… 消费者列表中为什么没有我的 Group ID？</dt><dd><p>出现该情况的原因可能是消息的下游订阅方太多，轨迹图中空间有限，请将鼠标放在滚动条位置，滚动查看完整数据。</p>
+</dd>
+<dt>… 之前的查询任务怎么看不到了？</dt><dd><p>为了防止历史查询任务太多，影响展示效果，消息队列 RocketMQ 会对用户的历史查询任务做定期清理，
+默认只保留 7 天以内的查询任务，如果出现历史任务看不到，请重新查询即可。</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="id5">
 <h2>告警处理<a class="headerlink" href="#id5" title="永久链接至标题">¶</a></h2>
-<ul class="simple">
-<li><p>收到订阅关系不一致告警后怎么办？</p></li>
-<li><p>消息队列 RocketMQ 如何添加消费堆积告警？</p></li>
-<li><p>消息队列 RocketMQ 用户收到堆积告警后怎么办？</p></li>
-</ul>
+<p>… 收到订阅关系不一致告警后怎么办？</p>
+<dl>
+<dt>… 消息队列 RocketMQ 如何添加消费堆积告警？</dt><dd><p>登录消息队列 RocketMQ 控制台。</p>
+<ol class="arabic simple">
+<li><p>在左侧菜单栏选择监控报警。</p></li>
+<li><p>单击页面右上角新增监控项，选择需要报警的 Group ID 与 Topic，设置报警阈值以及报警人信息即可完成报警项设置。</p></li>
+<li><p>更多详细信息请参考监控报警。</p></li>
+</ol>
+</dd>
+<dt>… 消息队列 RocketMQ 用户收到堆积告警后怎么办？</dt><dd><p><strong>问题确认</strong></p>
+<p>登录消息队列 RocketMQ 控制台，选择 Group 管理 &gt; 消费者状态，堆积量栏的值高于预期。</p>
+<p>登录消息队列 RocketMQ 控制台，选择消息轨迹 &gt; 创建查询任务 &gt; 按 Message ID 查询，
+部分消息已发送至 Broker，但未投递给下游消费者。</p>
+<p><strong>问题分析</strong></p>
+<p>消息队列 RocketMQ 的消息发送至 Broker 后，配置了 Group ID 的客户端根据当前的消费位点从 Broker 拉取部分消息到本地进行消费。
+消费过程中访问共享资源加锁、I/O 和网络资源争抢、HTTP 调用未设置超时时间等原因，都会导致单条消息的消费时间很长，消息开始在服务端堆积。</p>
+<p><strong>解决方案</strong></p>
+<p>请按照如下方法排查并解决问题：</p>
+<p>登录消息队列 RocketMQ 控制台，选择资源报表 &gt; 消息消费，查询历史消费记录。
+如果消息写入速度大于消息消费速度，调整业务代码或对消费者进行扩容。</p>
+<p>在应用打印 Jstack 信息 jstack -l {pid} | grep ConsumeMessageThread。
+如果有消息阻塞现象，连续打印 5 次 Jstack 信息，确认消费线程卡在哪里，解决后可尝试重启应用观察消费是否恢复。</p>
+<p>如果消息已经没有堆积，检查阈值是否设置过小导致消息堆积，单击监控报警，单击编辑，增大消息堆积的报警阈值。</p>
+<p><strong>结果验证</strong></p>
+<p>在应用打印 Jstack 信息 jstack -l {pid} | grep ConsumeMessageThread，无消费线程阻塞现象。</p>
+<p>登录消息队列 RocketMQ 控制台，选择 Group 管理 &gt; 消费者状态，消费 TPS 栏的值上升，堆积量栏的值下降。</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="id6">
 <h2>顺序消息<a class="headerlink" href="#id6" title="永久链接至标题">¶</a></h2>
-<ul class="simple">
-<li><p>顺序消息是否支持集群消费和广播消费？</p></li>
-<li><p>同一条消息是否可以既是顺序消息，同时又支持定时消息和事务消息？</p></li>
-<li><p>顺序消息支持哪些 Region？</p></li>
-<li><p>顺序消息的使用范围是什么？</p></li>
-<li><p>为什么全局顺序消息性能一般？</p></li>
-<li><p>顺序消息支持哪种消息发送方式？</p></li>
-</ul>
+<dl class="simple">
+<dt>… 顺序消息是否支持集群消费和广播消费？</dt><dd><p>顺序消息支持集群消费，不支持广播消费。</p>
+</dd>
+<dt>… 同一条消息是否可以既是顺序消息，同时又支持定时消息和事务消息？</dt><dd><p>不行。顺序消息、定时消息、事务消息是不同的消息类型，三者是互斥关系，不能叠加在一起使用。</p>
+</dd>
+<dt>… 顺序消息支持哪些 Region？</dt><dd><p>支持消息队列 RocketMQ 所有公共云 Region 和金融云 Region。</p>
+</dd>
+<dt>… 顺序消息的使用范围是什么？</dt><dd><p>关于顺序消息的使用范围，包括适用场景和使用限制等，请参见顺序消息。</p>
+</dd>
+<dt>… 为什么全局顺序消息性能一般？</dt><dd><p>全局顺序消息是严格按照 FIFO 的消息阻塞原则，即上一条消息没有被成功消息，
+那么下一条消息会一直被存储到 Topic 队列中。如果想提高全局顺序消息的 TPS，
+可以升级实例配置，同时消息客户端应用尽量减少处理本地业务逻辑的耗时。</p>
+</dd>
+<dt>… 顺序消息支持哪种消息发送方式？</dt><dd><p>顺序消息只支持可靠同步发送方式。</p>
+</dd>
+</dl>
 </div>
 <div class="section" id="id7">
 <h2>消息堆积<a class="headerlink" href="#id7" title="永久链接至标题">¶</a></h2>
-<ul class="simple">
-<li><p>如何处理消息堆积？</p></li>
+<dl>
+<dt>… 如何处理消息堆积？</dt><dd><p>除了异步解耦功能，消息队列 RocketMQ 还有挡住前端数据洪峰的重要功能，以此保证后端系统的稳定性。
+这要求消息队列 RocketMQ 具有一定的消息堆积能力。消息队列 RocketMQ 能支持 10 亿级别的消息堆积，不会因为消息堆积导致性能明显下降。</p>
+<p><strong>问题描述</strong></p>
+<p>在消息队列 RocketMQ 控制台的消费者状态页面，看到 Group ID 的实时消息堆积量的值高于预期，且性能明显下降。</p>
+<p><strong>解决方法</strong></p>
+<p>面对消息堆积，且有明显性能下降的情况，可采取以下措施处理：</p>
+<ol class="arabic">
+<li><p>在消息队列 RocketMQ 控制台，通过查看消费者状态获取消息堆积的消费者实例所对应的宿主机 IP，并登录该宿主机或容器。</p></li>
+<li><p>执行以下任一命令查看进程 pid：</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>ps -ef <span class="p">|</span>grep java
+jps -lm
+</pre></div>
+</div>
+</li>
+<li><p>执行以下命令查看堆栈信息：</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>jstack -l pid &gt; /tmp/pid.jstack
+</pre></div>
+</div>
+</li>
+<li><p>执行以下命令查看 ConsumeMessageThread 的信息，重点关注线程的状态及堆栈：</p>
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>cat /tmp/pid.jstack<span class="p">|</span>grep ConsumeMessageThread -A <span class="m">10</span> --color
+</pre></div>
+</div>
+<p>命令回显如下图所示。</p>
+<div class="figure align-default">
+<img alt="命令回显" src="http://docs-aliyun.cn-hangzhou.oss.aliyun-inc.com/assets/pic/117349/cn_zh/1556615506874/%E5%A0%86%E6%A0%88%E5%A4%84%E7%90%86.png" />
+</div>
+</li>
+</ol>
+<p>线程状态的解释说明请参见 Java 官方文档。</p>
+<p><strong>更多信息</strong></p>
+<p>如按以上操作还未解决因消息堆积而导致的性能下降问题，请提交工单。提交时，请附带以下信息：</p>
+<ul>
+<li><p>heap.bin 文件</p>
+<p>该文件可通过执行 jmap -dump:format=b,file=heap.bin [pid] 命令获取，再执行 gzip heap.bin 命令生成压缩包。
+[pid] 是消息堆积处理第一步中找到的进程 pid。</p>
+</li>
+<li><p>发生消息堆积的消费者客户端ons.log本地日志</p></li>
+<li><p>消费者客户端的版本</p></li>
 </ul>
+</dd>
+</dl>
 </div>
 </div>
 
@@ -241,7 +451,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="charging.html" class="btn btn-neutral float-right" title="计费相关" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="relationship-inconsistency.html" class="btn btn-neutral float-right" title="收到订阅关系不一致告警后怎么办？" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral float-left" title="常见问题" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
